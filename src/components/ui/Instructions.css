@@ -1,0 +1,22 @@
+.instructions {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.instructions h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.instructions ul {
+  list-style-position: inside;
+  color: #666;
+  line-height: 1.8;
+}
+
+.instructions li {
+  margin-bottom: 5px;
+}
+

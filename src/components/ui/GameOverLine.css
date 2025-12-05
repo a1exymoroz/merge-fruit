@@ -1,0 +1,31 @@
+.game-over-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.game-over-line .line {
+  width: 100%;
+  height: 3px;
+  background: #ff0000;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.game-over-line span {
+  display: block;
+  text-align: center;
+  margin-top: 5px;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #ff0000;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+

@@ -1,0 +1,14 @@
+.merge-fruit-game {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .merge-fruit-game {
+    padding: 20px;
+  }
+}

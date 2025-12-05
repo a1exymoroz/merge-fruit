@@ -1,0 +1,62 @@
+.drop-zone {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  cursor: crosshair;
+  background: rgba(102, 126, 234, 0.1);
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  outline: none;
+}
+
+.drop-zone:hover {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+.drop-zone:active {
+  background: rgba(102, 126, 234, 0.3);
+}
+
+.drop-indicator {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.drop-instructions {
+  font-size: 1em;
+  font-weight: bold;
+  color: #667eea;
+  text-align: center;
+  margin-bottom: 10px;
+  pointer-events: none;
+}
+
+.drop-preview {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: left 0.1s ease-out;
+}
+
+.drop-shadow {
+  opacity: 0.5;
+  filter: blur(2px);
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .drop-instructions {
+    font-size: 0.85em;
+  }
+}

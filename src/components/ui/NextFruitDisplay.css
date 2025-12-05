@@ -1,0 +1,17 @@
+.next-fruit-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.next-fruit-container p {
+  font-weight: bold;
+  color: #333;
+}
+
+.next-fruit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
