@@ -1,4 +1,4 @@
-import { useEffect, type RefObject, type MutableRefObject, type Dispatch, type SetStateAction } from 'react'
+import { useEffect, useRef, type RefObject, type MutableRefObject, type Dispatch, type SetStateAction } from 'react'
 import Matter from 'matter-js'
 import { 
   FRUIT_TYPES, 
@@ -56,6 +56,24 @@ export function useGamePhysics({
   engineRef,
   runnerRef,
 }: UseGamePhysicsParams): void {
+  // Use refs to track current values inside the interval callback (avoid stale closures)
+  const gameOverRef = useRef(gameOver)
+  const gameOverTimerRef = useRef(gameOverTimer)
+  const highScoreRef = useRef(highScore)
+
+  // Keep refs in sync with props
+  useEffect(() => {
+    gameOverRef.current = gameOver
+  }, [gameOver])
+
+  useEffect(() => {
+    gameOverTimerRef.current = gameOverTimer
+  }, [gameOverTimer])
+
+  useEffect(() => {
+    highScoreRef.current = highScore
+  }, [highScore])
+
   useEffect(() => {
     // Initialize physics engine
     const engine = Matter.Engine.create()
@@ -173,7 +191,7 @@ export function useGamePhysics({
 
     // Update fruit positions for rendering
     const updatePositions = () => {
-      if (gameOver) return
+      if (gameOverRef.current) return
 
       const entries: Array<[Matter.Body, FruitData]> = fruitsRef.current ? Array.from(fruitsRef.current.entries()) : []
       const fruitArray: FruitRenderData[] = entries.map(([body, data]) => ({
@@ -188,39 +206,31 @@ export function useGamePhysics({
       setFruits(fruitArray)
 
       // Check for game over
-      // Fruits are dropped at DROP_Y (50px) and fall down (y increases)
-      // Game over line is at GAME_OVER_LINE_Y (100px) from top of container
-      // The container starts below the drop zone, so we need to check if fruits
-      // have actually entered the container and then stacked above the line
+      // A fruit is considered "above the line" if its top edge is above GAME_OVER_LINE_Y
+      // We also check that the fruit has settled (low velocity) to avoid false positives during drop
       let fruitAboveLine = false
       fruitsRef.current?.forEach((data: FruitData, body: Matter.Body) => {
-        // Only check fruits that have fallen into the container area
-        // The drop zone is 0-100px, container starts at 100px
-        // So we only check fruits that are below the drop zone (y > GAME_OVER_LINE_Y)
-        // and then check if they've stacked back up above the line
         const fruitCenterY = body.position.y
         const fruitTop = fruitCenterY - data.fruitType.radius
+        const velocity = body.velocity || { x: 0, y: 0 }
+        const isSettled = Math.abs(velocity.y) < 2
         
-        // Fruit must have entered the container (fallen past the game over line)
-        // Use a larger buffer (50px) to ensure fruit has actually entered play area
-        // and account for bouncing/rolling behavior
-        const hasEnteredContainer = fruitCenterY > GAME_OVER_LINE_Y + 50
-        const isAboveLine = fruitTop < GAME_OVER_LINE_Y
-        
-        if (hasEnteredContainer && isAboveLine) {
+        if (fruitTop < GAME_OVER_LINE_Y && isSettled) {
           fruitAboveLine = true
         }
       })
 
-      if (fruitAboveLine && !gameOver) {
-        if (!gameOverTimer) {
+      if (fruitAboveLine && !gameOverRef.current) {
+        if (!gameOverTimerRef.current) {
+          console.log('setting game over timer')
           const timer = setTimeout(() => {
+            debugger;
             setGameOver(true)
             Matter.Runner.stop(runner)
             
             // Update high score
             setScore((currentScore: number) => {
-              if (currentScore > highScore) {
+              if (currentScore > highScoreRef.current) {
                 const newHighScore = currentScore
                 setHighScore(newHighScore)
                 localStorage.setItem('fruitMergeHighScore', newHighScore.toString())
@@ -230,8 +240,9 @@ export function useGamePhysics({
           }, GAME_OVER_DELAY)
           setGameOverTimer(timer)
         }
-      } else if (!fruitAboveLine && gameOverTimer) {
-        clearTimeout(gameOverTimer)
+      } else if (!fruitAboveLine && gameOverTimerRef.current) {
+        console.log('clearing game over timer')
+        clearTimeout(gameOverTimerRef.current)
         setGameOverTimer(null)
       }
     }
@@ -240,7 +251,7 @@ export function useGamePhysics({
 
     return () => {
       clearInterval(interval)
-      if (gameOverTimer) clearTimeout(gameOverTimer)
+      if (gameOverTimerRef.current) clearTimeout(gameOverTimerRef.current)
       if (runnerRef.current) Matter.Runner.stop(runnerRef.current)
       if (engineRef.current) Matter.Engine.clear(engineRef.current)
     }

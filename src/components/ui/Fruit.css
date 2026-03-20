@@ -4,7 +4,7 @@
   align-items: center;
   user-select: none;
   transition: transform 0.1s;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 .fruit-emoji {
