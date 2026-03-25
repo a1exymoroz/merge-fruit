@@ -31,12 +31,11 @@ function MergeFruitGame() {
     if (!engineRef.current) return
 
     const body = Matter.Bodies.circle(x, y, fruitType.radius, {
-      restitution: 0.4, // Slightly bouncy for more realistic physics
-      friction: 0.6, // Higher friction for better rolling/tipping
-      frictionAir: 0.01, // Air resistance for more realistic movement
+      restitution: 0.4,
+      friction: 0.6,
+      frictionAir: 0.01,
       density: 0.001,
-      inertia: Infinity, // Prevent rotation from being too easy (more realistic tipping)
-      frictionStatic: 0.8, // Static friction for stacking
+      frictionStatic: 0.8,
     })
 
     const uniqueId = Date.now() + Math.random()
