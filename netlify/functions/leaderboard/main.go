@@ -8,8 +8,10 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -17,13 +19,13 @@ import (
 )
 
 const (
-	maxScoreValue     = 1000000
-	minScoreValue     = 0
-	maxNameLength     = 20
+	maxScoreValue      = 1000000
+	minScoreValue      = 0
+	maxNameLength      = 20
 	maxLeaderboardSize = 10
-	rateLimitWindow   = 10 * time.Second
-	maxRequestsPerIP  = 5
-	maxBodySize       = 1024
+	rateLimitWindow    = 10 * time.Second
+	maxRequestsPerIP   = 5
+	maxBodySize        = 1024
 )
 
 type ScoreEntry struct {
@@ -37,7 +39,7 @@ type Leaderboard struct {
 }
 
 type RateLimitEntry struct {
-	Requests  []int64 `json:"requests"`
+	Requests []int64 `json:"requests"`
 }
 
 type SubmitRequest struct {
@@ -50,117 +52,163 @@ type BlobsContext struct {
 	Token string `json:"token"`
 }
 
-func getBlobsContext() (*BlobsContext, error) {
-	ctx := os.Getenv("NETLIFY_BLOBS_CONTEXT")
-	if ctx == "" {
-		return nil, fmt.Errorf("NETLIFY_BLOBS_CONTEXT not set")
-	}
-	
-	var blobsCtx BlobsContext
-	if err := json.Unmarshal([]byte(ctx), &blobsCtx); err != nil {
-		return nil, fmt.Errorf("failed to parse blobs context: %w", err)
-	}
-	return &blobsCtx, nil
+type Storage interface {
+	Get(store, key string) ([]byte, error)
+	Set(store, key string, data []byte) error
 }
 
-func getBlob(ctx *BlobsContext, store, key string) ([]byte, error) {
-	url := fmt.Sprintf("%s/%s/%s", ctx.URL, store, key)
+type BlobStorage struct {
+	ctx *BlobsContext
+}
+
+type LocalStorage struct {
+	dir string
+	mu  sync.RWMutex
+}
+
+var localStorage *LocalStorage
+
+func getStorage() (Storage, error) {
+	ctx := os.Getenv("NETLIFY_BLOBS_CONTEXT")
+	if ctx != "" {
+		var blobsCtx BlobsContext
+		if err := json.Unmarshal([]byte(ctx), &blobsCtx); err != nil {
+			return nil, fmt.Errorf("failed to parse blobs context: %w", err)
+		}
+		return &BlobStorage{ctx: &blobsCtx}, nil
+	}
+
+	if localStorage == nil {
+		dir := os.Getenv("LOCAL_STORAGE_DIR")
+		if dir == "" {
+			dir = "/tmp/leaderboard-data"
+		}
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			return nil, fmt.Errorf("failed to create local storage dir: %w", err)
+		}
+		localStorage = &LocalStorage{dir: dir}
+	}
+	return localStorage, nil
+}
+
+func (s *BlobStorage) Get(store, key string) ([]byte, error) {
+	url := fmt.Sprintf("%s/%s/%s", s.ctx.URL, store, key)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Authorization", "Bearer "+ctx.Token)
-	
+	req.Header.Set("Authorization", "Bearer "+s.ctx.Token)
+
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	
+
 	if resp.StatusCode == http.StatusNotFound {
 		return nil, nil
 	}
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("blob get failed: %d", resp.StatusCode)
 	}
-	
+
 	return io.ReadAll(resp.Body)
 }
 
-func setBlob(ctx *BlobsContext, store, key string, data []byte) error {
-	url := fmt.Sprintf("%s/%s/%s", ctx.URL, store, key)
+func (s *BlobStorage) Set(store, key string, data []byte) error {
+	url := fmt.Sprintf("%s/%s/%s", s.ctx.URL, store, key)
 	req, err := http.NewRequest("PUT", url, bytes.NewReader(data))
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Authorization", "Bearer "+ctx.Token)
+	req.Header.Set("Authorization", "Bearer "+s.ctx.Token)
 	req.Header.Set("Content-Type", "application/json")
-	
+
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
-	
+
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
 		return fmt.Errorf("blob set failed: %d", resp.StatusCode)
 	}
 	return nil
 }
 
-func checkRateLimit(ctx *BlobsContext, ip string) (bool, error) {
+func (s *LocalStorage) Get(store, key string) ([]byte, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	path := filepath.Join(s.dir, store+"_"+key+".json")
+	data, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		return nil, nil
+	}
+	return data, err
+}
+
+func (s *LocalStorage) Set(store, key string, data []byte) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	path := filepath.Join(s.dir, store+"_"+key+".json")
+	return os.WriteFile(path, data, 0644)
+}
+
+func checkRateLimit(storage Storage, ip string) (bool, error) {
 	key := "ratelimit_" + strings.ReplaceAll(ip, ".", "_")
-	data, err := getBlob(ctx, "leaderboard", key)
+	data, err := storage.Get("leaderboard", key)
 	if err != nil {
 		return false, err
 	}
-	
+
 	var entry RateLimitEntry
 	if data != nil {
 		if err := json.Unmarshal(data, &entry); err != nil {
 			entry = RateLimitEntry{Requests: []int64{}}
 		}
 	}
-	
+
 	now := time.Now().Unix()
 	windowStart := now - int64(rateLimitWindow.Seconds())
-	
+
 	var validRequests []int64
 	for _, ts := range entry.Requests {
 		if ts > windowStart {
 			validRequests = append(validRequests, ts)
 		}
 	}
-	
+
 	if len(validRequests) >= maxRequestsPerIP {
 		return false, nil
 	}
-	
+
 	validRequests = append(validRequests, now)
 	entry.Requests = validRequests
-	
+
 	newData, err := json.Marshal(entry)
 	if err != nil {
 		return false, err
 	}
-	
-	if err := setBlob(ctx, "leaderboard", key, newData); err != nil {
+
+	if err := storage.Set("leaderboard", key, newData); err != nil {
 		return false, err
 	}
-	
+
 	return true, nil
 }
 
-func getLeaderboard(ctx *BlobsContext) (*Leaderboard, error) {
-	data, err := getBlob(ctx, "leaderboard", "scores")
+func getLeaderboard(storage Storage) (*Leaderboard, error) {
+	data, err := storage.Get("leaderboard", "scores")
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if data == nil {
 		return &Leaderboard{Scores: []ScoreEntry{}}, nil
 	}
-	
+
 	var lb Leaderboard
 	if err := json.Unmarshal(data, &lb); err != nil {
 		return &Leaderboard{Scores: []ScoreEntry{}}, nil
@@ -168,12 +216,12 @@ func getLeaderboard(ctx *BlobsContext) (*Leaderboard, error) {
 	return &lb, nil
 }
 
-func saveLeaderboard(ctx *BlobsContext, lb *Leaderboard) error {
+func saveLeaderboard(storage Storage, lb *Leaderboard) error {
 	data, err := json.Marshal(lb)
 	if err != nil {
 		return err
 	}
-	return setBlob(ctx, "leaderboard", "scores", data)
+	return storage.Set("leaderboard", "scores", data)
 }
 
 func sanitizeName(name string) string {
@@ -221,9 +269,9 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 		}, nil
 	}
 
-	blobsCtx, err := getBlobsContext()
+	storage, err := getStorage()
 	if err != nil {
-		return errorResponse(500, "Storage unavailable"), nil
+		return errorResponse(500, "Storage unavailable: "+err.Error()), nil
 	}
 
 	clientIP := request.Headers["x-forwarded-for"]
@@ -236,11 +284,11 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 
 	switch request.HTTPMethod {
 	case "GET":
-		lb, err := getLeaderboard(blobsCtx)
+		lb, err := getLeaderboard(storage)
 		if err != nil {
 			return errorResponse(500, "Failed to load leaderboard"), nil
 		}
-		
+
 		body, _ := json.Marshal(lb.Scores)
 		return events.APIGatewayProxyResponse{
 			StatusCode: 200,
@@ -253,7 +301,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 			return errorResponse(413, "Request too large"), nil
 		}
 
-		allowed, err := checkRateLimit(blobsCtx, clientIP)
+		allowed, err := checkRateLimit(storage, clientIP)
 		if err != nil {
 			return errorResponse(500, "Rate limit check failed"), nil
 		}
@@ -272,7 +320,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 
 		req.Name = sanitizeName(req.Name)
 
-		lb, err := getLeaderboard(blobsCtx)
+		lb, err := getLeaderboard(storage)
 		if err != nil {
 			return errorResponse(500, "Failed to load leaderboard"), nil
 		}
@@ -292,14 +340,14 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 			lb.Scores = lb.Scores[:maxLeaderboardSize]
 		}
 
-		if err := saveLeaderboard(blobsCtx, lb); err != nil {
+		if err := saveLeaderboard(storage, lb); err != nil {
 			return errorResponse(500, "Failed to save score"), nil
 		}
 
 		rank := -1
 		for i, entry := range lb.Scores {
-			if entry.Name == newEntry.Name && entry.Score == newEntry.Score && 
-			   entry.Timestamp.Equal(newEntry.Timestamp) {
+			if entry.Name == newEntry.Name && entry.Score == newEntry.Score &&
+				entry.Timestamp.Equal(newEntry.Timestamp) {
 				rank = i + 1
 				break
 			}
