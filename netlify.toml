@@ -3,15 +3,9 @@
   publish = "dist"
   functions = "netlify/functions"
 
-[build.environment]
-  GO_VERSION = "1.21"
-
 [functions]
   directory = "netlify/functions"
-
-# Enable Netlify Blobs for storage
-[functions.leaderboard]
-  external_node_modules = []
+  node_bundler = "esbuild"
 
 # API redirects
 [[redirects]]
