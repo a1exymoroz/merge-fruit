@@ -224,7 +224,6 @@ export function useGamePhysics({
         if (!gameOverTimerRef.current) {
           console.log('setting game over timer')
           const timer = setTimeout(() => {
-            debugger;
             setGameOver(true)
             Matter.Runner.stop(runner)
             
