@@ -8,4 +8,5 @@ export { default as GameContainerWrapper } from './GameContainerWrapper'
 export { default as GameInfo } from './GameInfo'
 export { default as GameOverOverlay } from './GameOverOverlay'
 export { default as GameOverLine } from './GameOverLine'
+export { default as Leaderboard } from './Leaderboard'
 

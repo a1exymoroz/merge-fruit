@@ -5,7 +5,8 @@ import {
   GameContainerWrapper, 
   GameInfo, 
   GameOverOverlay, 
-  Instructions 
+  Instructions,
+  Leaderboard
 } from '../ui'
 import { useGamePhysics, type FruitRenderData } from '../../hooks/useGamePhysics'
 import { generateNextFruit } from '../../utils/fruitUtils'
@@ -111,6 +112,7 @@ function MergeFruitGame() {
         />
       )}
       <Instructions />
+      <Leaderboard />
     </div>
   )
 }
