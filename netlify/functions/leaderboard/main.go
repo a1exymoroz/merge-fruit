@@ -72,12 +72,13 @@ func getStorage() (Storage, error) {
 	ctx := os.Getenv("NETLIFY_BLOBS_CONTEXT")
 	if ctx != "" {
 		var blobsCtx BlobsContext
-		if err := json.Unmarshal([]byte(ctx), &blobsCtx); err != nil {
-			return nil, fmt.Errorf("failed to parse blobs context: %w", err)
+		if err := json.Unmarshal([]byte(ctx), &blobsCtx); err == nil && blobsCtx.URL != "" {
+			return &BlobStorage{ctx: &blobsCtx}, nil
 		}
-		return &BlobStorage{ctx: &blobsCtx}, nil
+		// If parsing fails or URL is empty, fall through to local storage
 	}
 
+	// Use local file storage as fallback
 	if localStorage == nil {
 		dir := os.Getenv("LOCAL_STORAGE_DIR")
 		if dir == "" {
