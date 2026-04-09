@@ -1,11 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useImperativeHandle, forwardRef } from 'react'
 import { getLeaderboard, type LeaderboardEntry } from '../../services/leaderboardApi'
 import './Leaderboard.css'
 
-function Leaderboard() {
+export interface LeaderboardRef {
+  refresh: () => void
+}
+
+const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  useImperativeHandle(ref, () => ({
+    refresh: loadLeaderboard
+  }))
 
   useEffect(() => {
     loadLeaderboard()
@@ -61,6 +69,6 @@ function Leaderboard() {
       )}
     </div>
   )
-}
+})
 
 export default Leaderboard
