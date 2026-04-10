@@ -8,6 +8,7 @@ import {
   Instructions,
   Leaderboard
 } from '../ui'
+import type { LeaderboardRef } from '../ui/Leaderboard'
 import { useGamePhysics, type FruitRenderData } from '../../hooks/useGamePhysics'
 import { generateNextFruit } from '../../utils/fruitUtils'
 import { type FruitType, CONTAINER_WIDTH, DROP_Y } from '../../constants/gameConstants'
@@ -26,6 +27,7 @@ function MergeFruitGame() {
   const mergeQueueRef = useRef<Set<string>>(new Set())
   const engineRef = useRef<Matter.Engine | null>(null)
   const runnerRef = useRef<Matter.Runner | null>(null)
+  const leaderboardRef = useRef<LeaderboardRef>(null)
 
   // Create fruit function
   const createFruit = (fruitType: FruitType, x: number, y: number) => {
@@ -108,11 +110,12 @@ function MergeFruitGame() {
         <GameOverOverlay 
           score={score} 
           highScore={highScore} 
-          onPlayAgain={resetGame} 
+          onPlayAgain={resetGame}
+          onScoreSubmitted={() => leaderboardRef.current?.refresh()}
         />
       )}
       <Instructions />
-      <Leaderboard />
+      <Leaderboard ref={leaderboardRef} />
     </div>
   )
 }

@@ -6,9 +6,10 @@ interface GameOverOverlayProps {
   score: number
   highScore: number
   onPlayAgain: () => void
+  onScoreSubmitted?: () => void
 }
 
-function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps) {
+function GameOverOverlay({ score, highScore, onPlayAgain, onScoreSubmitted }: GameOverOverlayProps) {
   const isNewHighScore = score === highScore && score > 0
   const [name, setName] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -28,6 +29,7 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
       setSubmitted(true)
       setRank(result.rank)
       setLeaderboard(result.leaderboard)
+      onScoreSubmitted?.()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to submit score')
     } finally {
