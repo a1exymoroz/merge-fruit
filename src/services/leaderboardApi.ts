@@ -1,4 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL || '/api/leaderboard'
+import { SCORES_API_URL } from '../config/api'
+import { getAuthHeaders } from '../utils/authStorage'
 
 export interface LeaderboardEntry {
   name: string
@@ -12,30 +13,52 @@ export interface SubmitScoreResponse {
   leaderboard: LeaderboardEntry[]
 }
 
+interface PaginatedScoresResponse {
+  content: LeaderboardEntry[]
+}
+
+function normalizeLeaderboard(data: LeaderboardEntry[] | PaginatedScoresResponse): LeaderboardEntry[] {
+  return Array.isArray(data) ? data : data.content
+}
+
 export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
-  const response = await fetch(API_URL)
+  const response = await fetch(SCORES_API_URL, {
+    headers: getAuthHeaders(),
+  })
+
+  if (response.status === 401) {
+    throw new Error('Session expired. Please sign in again.')
+  }
+
   if (!response.ok) {
     throw new Error('Failed to fetch leaderboard')
   }
-  return response.json()
+
+  const data = await response.json()
+  return normalizeLeaderboard(data)
 }
 
 export async function submitScore(name: string, score: number): Promise<SubmitScoreResponse> {
-  const response = await fetch(API_URL, {
+  const response = await fetch(SCORES_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...getAuthHeaders(),
     },
     body: JSON.stringify({ name, score }),
   })
-  
+
+  if (response.status === 401) {
+    throw new Error('Session expired. Please sign in again.')
+  }
+
   if (response.status === 429) {
     throw new Error('Too many requests. Please wait a moment.')
   }
-  
+
   if (!response.ok) {
     throw new Error('Failed to submit score')
   }
-  
+
   return response.json()
 }

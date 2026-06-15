@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useAuth } from '../../contexts/AuthContext'
 import { submitScore, type LeaderboardEntry } from '../../services/leaderboardApi'
 import './GameOverOverlay.css'
 
@@ -10,8 +11,9 @@ interface GameOverOverlayProps {
 }
 
 function GameOverOverlay({ score, highScore, onPlayAgain, onScoreSubmitted }: GameOverOverlayProps) {
+  const { user } = useAuth()
   const isNewHighScore = score === highScore && score > 0
-  const [name, setName] = useState('')
+  const [name, setName] = useState(user?.displayName ?? '')
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
