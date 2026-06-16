@@ -8,28 +8,30 @@ import {
   Instructions,
   Leaderboard
 } from '../ui'
-import type { LeaderboardRef } from '../ui/Leaderboard'
 import { useGamePhysics, type FruitRenderData } from '../../hooks/useGamePhysics'
 import { generateNextFruit } from '../../utils/fruitUtils'
 import { type FruitType, CONTAINER_WIDTH, DROP_Y } from '../../constants/gameConstants'
+import { fetchScores, useAppDispatch, useAppSelector, selectHighScore } from '../../store'
 import './MergeFruitGame.css'
 
 function MergeFruitGame() {
+  const dispatch = useAppDispatch()
+  const highScore = useAppSelector(selectHighScore)
+
   const fruitsRef = useRef<Map<Matter.Body, { fruitType: FruitType; uniqueId: number }>>(new Map())
   const [fruits, setFruits] = useState<FruitRenderData[]>([])
   const [score, setScore] = useState(0)
-  const [highScore, setHighScore] = useState(() => {
-    return parseInt(localStorage.getItem('fruitMergeHighScore') || '0', 10)
-  })
   const [nextFruit, setNextFruit] = useState<FruitType | null>(null)
   const [gameOver, setGameOver] = useState(false)
   const [gameOverTimer, setGameOverTimer] = useState<ReturnType<typeof setTimeout> | null>(null)
   const mergeQueueRef = useRef<Set<string>>(new Set())
   const engineRef = useRef<Matter.Engine | null>(null)
   const runnerRef = useRef<Matter.Runner | null>(null)
-  const leaderboardRef = useRef<LeaderboardRef>(null)
 
-  // Create fruit function
+  useEffect(() => {
+    dispatch(fetchScores())
+  }, [dispatch])
+
   const createFruit = (fruitType: FruitType, x: number, y: number) => {
     if (!engineRef.current) return
 
@@ -46,7 +48,6 @@ function MergeFruitGame() {
     fruitsRef.current.set(body, { fruitType, uniqueId })
   }
 
-  // Initialize physics - pass refs so hook can set them
   useGamePhysics({
     fruitsRef,
     setFruits,
@@ -55,15 +56,12 @@ function MergeFruitGame() {
     setGameOver,
     gameOverTimer,
     setGameOverTimer,
-    highScore,
-    setHighScore,
     mergeQueueRef,
     createFruit,
     engineRef,
     runnerRef,
   })
 
-  // Initialize next fruit
   useEffect(() => {
     if (!nextFruit) {
       setNextFruit(generateNextFruit())
@@ -81,7 +79,6 @@ function MergeFruitGame() {
   const resetGame = () => {
     if (!engineRef.current || !runnerRef.current) return
 
-    // Clear all fruits
     const bodiesToRemove = Array.from(fruitsRef.current.keys())
     if (bodiesToRemove.length > 0) {
       Matter.World.remove(engineRef.current.world, bodiesToRemove)
@@ -97,7 +94,6 @@ function MergeFruitGame() {
       setGameOverTimer(null)
     }
 
-    // Restart runner
     Matter.Runner.run(runnerRef.current, engineRef.current)
   }
 
@@ -111,14 +107,12 @@ function MergeFruitGame() {
           score={score} 
           highScore={highScore} 
           onPlayAgain={resetGame}
-          onScoreSubmitted={() => leaderboardRef.current?.refresh()}
         />
       )}
       <Instructions />
-      <Leaderboard ref={leaderboardRef} />
+      <Leaderboard />
     </div>
   )
 }
 
 export default MergeFruitGame
-
