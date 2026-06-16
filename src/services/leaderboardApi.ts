@@ -21,6 +21,11 @@ function normalizeLeaderboard(data: LeaderboardEntry[] | PaginatedScoresResponse
   return Array.isArray(data) ? data : data.content
 }
 
+/** API returns scores sorted descending — first entry is the highest score. */
+export function getHighScoreFromEntries(entries: LeaderboardEntry[]): number {
+  return entries[0]?.score ?? 0
+}
+
 export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
   const response = await fetch(SCORES_API_URL, {
     headers: getAuthHeaders(),

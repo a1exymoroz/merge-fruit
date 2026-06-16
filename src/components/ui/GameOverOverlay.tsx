@@ -1,18 +1,19 @@
 import { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { submitScore, type LeaderboardEntry } from '../../services/leaderboardApi'
+import { updateEntries, useAppDispatch } from '../../store'
 import './GameOverOverlay.css'
 
 interface GameOverOverlayProps {
   score: number
   highScore: number
   onPlayAgain: () => void
-  onScoreSubmitted?: () => void
 }
 
-function GameOverOverlay({ score, highScore, onPlayAgain, onScoreSubmitted }: GameOverOverlayProps) {
+function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps) {
+  const dispatch = useAppDispatch()
   const { user } = useAuth()
-  const isNewHighScore = score === highScore && score > 0
+  const isNewHighScore = score > highScore && score > 0
   const [name, setName] = useState(user?.displayName ?? '')
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -31,7 +32,7 @@ function GameOverOverlay({ score, highScore, onPlayAgain, onScoreSubmitted }: Ga
       setSubmitted(true)
       setRank(result.rank)
       setLeaderboard(result.leaderboard)
-      onScoreSubmitted?.()
+      dispatch(updateEntries(result.leaderboard))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to submit score')
     } finally {

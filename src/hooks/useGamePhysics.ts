@@ -33,8 +33,6 @@ export interface UseGamePhysicsParams {
   setGameOver: Dispatch<SetStateAction<boolean>>
   gameOverTimer: ReturnType<typeof setTimeout> | null
   setGameOverTimer: Dispatch<SetStateAction<ReturnType<typeof setTimeout> | null>>
-  highScore: number
-  setHighScore: Dispatch<SetStateAction<number>>
   mergeQueueRef: RefObject<Set<string>>
   createFruit: (fruitType: FruitType, x: number, y: number) => void
   engineRef: MutableRefObject<Matter.Engine | null>
@@ -49,8 +47,6 @@ export function useGamePhysics({
   setGameOver,
   gameOverTimer,
   setGameOverTimer,
-  highScore,
-  setHighScore,
   mergeQueueRef,
   createFruit,
   engineRef,
@@ -59,7 +55,6 @@ export function useGamePhysics({
   // Use refs to track current values inside the interval callback (avoid stale closures)
   const gameOverRef = useRef(gameOver)
   const gameOverTimerRef = useRef(gameOverTimer)
-  const highScoreRef = useRef(highScore)
 
   // Keep refs in sync with props
   useEffect(() => {
@@ -69,10 +64,6 @@ export function useGamePhysics({
   useEffect(() => {
     gameOverTimerRef.current = gameOverTimer
   }, [gameOverTimer])
-
-  useEffect(() => {
-    highScoreRef.current = highScore
-  }, [highScore])
 
   useEffect(() => {
     // Initialize physics engine
@@ -226,16 +217,6 @@ export function useGamePhysics({
           const timer = setTimeout(() => {
             setGameOver(true)
             Matter.Runner.stop(runner)
-            
-            // Update high score
-            setScore((currentScore: number) => {
-              if (currentScore > highScoreRef.current) {
-                const newHighScore = currentScore
-                setHighScore(newHighScore)
-                localStorage.setItem('fruitMergeHighScore', newHighScore.toString())
-              }
-              return currentScore
-            })
           }, GAME_OVER_DELAY)
           setGameOverTimer(timer)
         }

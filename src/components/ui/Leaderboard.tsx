@@ -1,5 +1,10 @@
-import { useState, useEffect, useImperativeHandle, forwardRef } from 'react'
-import { getLeaderboard, type LeaderboardEntry } from '../../services/leaderboardApi'
+import { useEffect, useImperativeHandle, forwardRef } from 'react'
+import { fetchScores, useAppDispatch, useAppSelector } from '../../store'
+import {
+  selectLeaderboardEntries,
+  selectScoresError,
+  selectScoresLoading,
+} from '../../store/selectors'
 import './Leaderboard.css'
 
 export interface LeaderboardRef {
@@ -7,30 +12,22 @@ export interface LeaderboardRef {
 }
 
 const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
-  const [entries, setEntries] = useState<LeaderboardEntry[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
+  const entries = useAppSelector(selectLeaderboardEntries)
+  const loading = useAppSelector(selectScoresLoading)
+  const error = useAppSelector(selectScoresError)
+
+  const loadLeaderboard = () => {
+    dispatch(fetchScores())
+  }
 
   useImperativeHandle(ref, () => ({
-    refresh: loadLeaderboard
+    refresh: loadLeaderboard,
   }))
 
   useEffect(() => {
     loadLeaderboard()
   }, [])
-
-  const loadLeaderboard = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      const data = await getLeaderboard()
-      setEntries(data)
-    } catch {
-      setError('Failed to load leaderboard')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   if (loading) {
     return (
