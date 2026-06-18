@@ -1,11 +1,11 @@
-import React from 'react'
-import NextFruitDisplay from './NextFruitDisplay'
-import { type FruitType } from '../../constants/gameConstants'
-import './GameInfo.css'
+import React from 'react';
+import NextFruitDisplay from './NextFruitDisplay';
+import { type FruitType } from '../../constants/gameConstants';
+import './GameInfo.css';
 
 interface GameInfoProps {
-  nextFruit: FruitType | null
-  onReset: () => void
+  nextFruit: FruitType | null;
+  onReset: () => void;
 }
 
 function GameInfo({ nextFruit, onReset }: GameInfoProps) {
@@ -16,8 +16,7 @@ function GameInfo({ nextFruit, onReset }: GameInfoProps) {
         Reset Game
       </button>
     </div>
-  )
+  );
 }
 
-export default GameInfo
-
+export default GameInfo;

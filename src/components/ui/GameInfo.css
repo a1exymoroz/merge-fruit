@@ -17,7 +17,9 @@
   font-size: 1em;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .reset-button:hover {
@@ -35,4 +37,3 @@
     gap: 15px;
   }
 }
-

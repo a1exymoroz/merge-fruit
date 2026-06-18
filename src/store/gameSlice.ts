@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 // TODO (learning exercise): move game state from MergeFruitGame into Redux.
 //
@@ -15,7 +15,7 @@ interface GameState {
   // gameOver: boolean
 }
 
-const initialState: GameState = {}
+const initialState: GameState = {};
 
 const gameSlice = createSlice({
   name: 'game',
@@ -23,7 +23,7 @@ const gameSlice = createSlice({
   reducers: {
     // TODO (learning): implement your reducers here
   },
-})
+});
 
 // export const { } = gameSlice.actions
-export default gameSlice.reducer
+export default gameSlice.reducer;

@@ -1,16 +1,16 @@
-import React from 'react'
-import Fruit from './Fruit'
-import { type FruitRenderData } from '../../hooks/useGamePhysics'
-import './GameContainer.css'
-import { CONTAINER_WIDTH, CONTAINER_HEIGHT } from '../../constants/gameConstants'
+import React from 'react';
+import Fruit from './Fruit';
+import { type FruitRenderData } from '../../hooks/useGamePhysics';
+import './GameContainer.css';
+import { CONTAINER_WIDTH, CONTAINER_HEIGHT } from '../../constants/gameConstants';
 
 interface GameContainerProps {
-  fruits: FruitRenderData[]
+  fruits: FruitRenderData[];
 }
 
 function GameContainer({ fruits }: GameContainerProps) {
   return (
-    <div 
+    <div
       className="game-container"
       style={{ width: `${CONTAINER_WIDTH}px`, height: `${CONTAINER_HEIGHT}px` }}
     >
@@ -24,8 +24,7 @@ function GameContainer({ fruits }: GameContainerProps) {
         />
       ))}
     </div>
-  )
+  );
 }
 
-export default GameContainer
-
+export default GameContainer;

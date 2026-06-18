@@ -39,7 +39,8 @@
   gap: 20px;
 }
 
-.score, .high-score {
+.score,
+.high-score {
   font-size: 1.2em;
   font-weight: bold;
   padding: 10px 20px;
@@ -63,4 +64,3 @@
     gap: 10px;
   }
 }
-

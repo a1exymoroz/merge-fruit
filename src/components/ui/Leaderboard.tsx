@@ -1,33 +1,33 @@
-import { useEffect, useImperativeHandle, forwardRef } from 'react'
-import { fetchScores, useAppDispatch, useAppSelector } from '../../store'
+import { useEffect, useImperativeHandle, forwardRef } from 'react';
+import { fetchScores, useAppDispatch, useAppSelector } from '../../store';
 import {
   selectLeaderboardEntries,
   selectScoresError,
   selectScoresLoading,
-} from '../../store/selectors'
-import './Leaderboard.css'
+} from '../../store/selectors';
+import './Leaderboard.css';
 
 export interface LeaderboardRef {
-  refresh: () => void
+  refresh: () => void;
 }
 
 const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
-  const dispatch = useAppDispatch()
-  const entries = useAppSelector(selectLeaderboardEntries)
-  const loading = useAppSelector(selectScoresLoading)
-  const error = useAppSelector(selectScoresError)
+  const dispatch = useAppDispatch();
+  const entries = useAppSelector(selectLeaderboardEntries);
+  const loading = useAppSelector(selectScoresLoading);
+  const error = useAppSelector(selectScoresError);
 
   const loadLeaderboard = () => {
-    dispatch(fetchScores())
-  }
+    dispatch(fetchScores());
+  };
 
   useImperativeHandle(ref, () => ({
     refresh: loadLeaderboard,
-  }))
+  }));
 
   useEffect(() => {
-    loadLeaderboard()
-  }, [])
+    loadLeaderboard();
+  }, []);
 
   if (loading) {
     return (
@@ -35,7 +35,7 @@ const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
         <h3>🏆 Top 10</h3>
         <p className="leaderboard-loading">Loading...</p>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -43,9 +43,11 @@ const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
       <div className="leaderboard">
         <h3>🏆 Top 10</h3>
         <p className="leaderboard-error">{error}</p>
-        <button onClick={loadLeaderboard} className="retry-button">Retry</button>
+        <button onClick={loadLeaderboard} className="retry-button">
+          Retry
+        </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -65,7 +67,7 @@ const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
         </ol>
       )}
     </div>
-  )
-})
+  );
+});
 
-export default Leaderboard
+export default Leaderboard;

@@ -18,7 +18,7 @@ test.describe('UI Interactions', () => {
     // Next fruit should have an emoji
     const nextFruitEmoji = await page.locator('.next-fruit .fruit-emoji');
     await expect(nextFruitEmoji).toBeVisible();
-    
+
     const emojiText = await nextFruitEmoji.textContent();
     // Should be a fruit emoji (non-empty)
     expect(emojiText?.trim().length).toBeGreaterThan(0);
@@ -27,10 +27,10 @@ test.describe('UI Interactions', () => {
   test('should show game over line with correct styling', async ({ page }) => {
     const gameOverLine = page.locator('.game-over-line');
     await expect(gameOverLine).toBeVisible();
-    
+
     // Check that the line element exists
     await expect(page.locator('.game-over-line .line')).toBeVisible();
-    
+
     // Check that the label exists
     await expect(page.locator('.game-over-line span')).toBeVisible();
   });
@@ -38,16 +38,16 @@ test.describe('UI Interactions', () => {
   test('should have clickable drop zone', async ({ page }) => {
     const dropZone = page.locator('.drop-zone');
     await expect(dropZone).toBeVisible();
-    
+
     // Should have cursor pointer (indicates clickable)
     const cursor = await dropZone.evaluate((el) => {
       return window.getComputedStyle(el).cursor;
     });
-    
+
     // Drop zone should be interactive
     await dropZone.click();
     await page.waitForTimeout(300);
-    
+
     // Should have dropped a fruit (or at least attempted to)
     // Verify by checking that the click was registered
     expect(true).toBe(true); // Drop zone is clickable
@@ -56,11 +56,11 @@ test.describe('UI Interactions', () => {
   test('should update UI when fruits are dropped', async ({ page }) => {
     // Initial state - no fruits in container
     const initialFruitCount = await page.locator('.game-container .fruit').count();
-    
+
     // Drop a fruit
     await page.locator('.drop-zone').click();
     await page.waitForTimeout(500);
-    
+
     // Should have at least one fruit now
     const fruitCount = await page.locator('.game-container .fruit').count();
     expect(fruitCount).toBeGreaterThan(initialFruitCount);
@@ -93,4 +93,3 @@ test.describe('UI Interactions', () => {
     await expect(page.locator('.drop-zone')).toBeVisible();
   });
 });
-

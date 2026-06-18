@@ -1,20 +1,20 @@
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthContext'
-import './GameHeader.css'
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import './GameHeader.css';
 
 interface GameHeaderProps {
-  score: number
-  highScore: number
+  score: number;
+  highScore: number;
 }
 
 function GameHeader({ score, highScore }: GameHeaderProps) {
-  const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    logout()
-    navigate('/login', { replace: true })
-  }
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <div className="game-header">
@@ -30,8 +30,7 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
         <div className="high-score">High Score: {highScore}</div>
       </div>
     </div>
-  )
+  );
 }
 
-export default GameHeader
-
+export default GameHeader;

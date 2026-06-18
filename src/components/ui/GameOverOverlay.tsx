@@ -1,54 +1,53 @@
-import { useState } from 'react'
-import { useAuth } from '../../contexts/AuthContext'
-import { submitScore, type LeaderboardEntry } from '../../services/leaderboardApi'
-import { updateEntries, useAppDispatch } from '../../store'
-import './GameOverOverlay.css'
+import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { submitScore, type LeaderboardEntry } from '../../services/leaderboardApi';
+import { selectLeaderboardEntries, updateEntries, useAppDispatch, useAppSelector } from '../../store';
+import './GameOverOverlay.css';
 
 interface GameOverOverlayProps {
-  score: number
-  highScore: number
-  onPlayAgain: () => void
+  score: number;
+  highScore: number;
+  onPlayAgain: () => void;
 }
 
 function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps) {
-  const dispatch = useAppDispatch()
-  const { user } = useAuth()
-  const isNewHighScore = score > highScore && score > 0
-  const [name, setName] = useState(user?.displayName ?? '')
-  const [submitted, setSubmitted] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [rank, setRank] = useState<number | null>(null)
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
+  const dispatch = useAppDispatch();
+  const { user } = useAuth();
+  const leaderboard = useAppSelector(selectLeaderboardEntries);
+  const isNewHighScore = score > highScore && score > 0;
+  const [name, setName] = useState(user?.displayName ?? '');
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [rank, setRank] = useState<number | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!name.trim() || submitting) return
+    e.preventDefault();
+    if (!name.trim() || submitting) return;
 
     try {
-      setSubmitting(true)
-      setError(null)
-      const result = await submitScore(name.trim(), score)
-      setSubmitted(true)
-      setRank(result.rank)
-      setLeaderboard(result.leaderboard)
-      dispatch(updateEntries(result.leaderboard))
+      setSubmitting(true);
+      setError(null);
+      const result = await submitScore(name.trim(), score);
+      setSubmitted(true);
+      setRank(result.rank);
+      dispatch(updateEntries(result.leaderboard));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit score')
+      setError(err instanceof Error ? err.message : 'Failed to submit score');
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="game-over-overlay">
       <div className="game-over">
         <h2>Game Over!</h2>
-        <p className="final-score">Final Score: <strong>{score.toLocaleString()}</strong></p>
-        {isNewHighScore && (
-          <p className="new-high-score">🎉 New High Score! 🎉</p>
-        )}
-        
+        <p className="final-score">
+          Final Score: <strong>{score.toLocaleString()}</strong>
+        </p>
+        {isNewHighScore && <p className="new-high-score">🎉 New High Score! 🎉</p>}
+
         {!submitted ? (
           <form onSubmit={handleSubmit} className="submit-score-form">
             <p>Submit your score to the leaderboard:</p>
@@ -85,12 +84,13 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
             </div>
           </div>
         )}
-        
-        <button onClick={onPlayAgain} className="play-again-btn">Play Again</button>
+
+        <button onClick={onPlayAgain} className="play-again-btn">
+          Play Again
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default GameOverOverlay
-
+export default GameOverOverlay;

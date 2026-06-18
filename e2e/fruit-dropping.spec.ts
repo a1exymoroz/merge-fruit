@@ -26,7 +26,7 @@ test.describe('Fruit Dropping', () => {
   test('should update next fruit after dropping', async ({ page }) => {
     // Get the emoji of the next fruit
     const nextFruitEmoji = await page.locator('.next-fruit .fruit-emoji').textContent();
-    
+
     // Drop the fruit
     await page.locator('.drop-zone').click();
     await page.waitForTimeout(300);
@@ -53,21 +53,20 @@ test.describe('Fruit Dropping', () => {
     // Drop first fruit
     await page.locator('.drop-zone').click();
     await page.waitForTimeout(500);
-    
+
     const firstFruit = page.locator('.fruit').first();
     const firstPosition = await firstFruit.boundingBox();
-    
+
     // Drop second fruit
     await page.locator('.drop-zone').click();
     await page.waitForTimeout(500);
-    
+
     const secondFruit = page.locator('.fruit').nth(1);
     const secondPosition = await secondFruit.boundingBox();
-    
+
     // Fruits should be at different horizontal positions (due to random offset)
     if (firstPosition && secondPosition) {
       expect(Math.abs(firstPosition.x - secondPosition.x)).toBeGreaterThan(0);
     }
   });
 });
-

@@ -1,32 +1,32 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthContext'
-import '../ui/AuthForm.css'
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import '../ui/AuthForm.css';
 
 function SignUpPage() {
-  const navigate = useNavigate()
-  const { signUp } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [displayName, setDisplayName] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [submitting, setSubmitting] = useState(false)
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    if (submitting) return
+    event.preventDefault();
+    if (submitting) return;
 
     try {
-      setSubmitting(true)
-      setError(null)
-      await signUp(email.trim(), password, displayName.trim())
-      navigate('/', { replace: true })
+      setSubmitting(true);
+      setError(null);
+      await signUp(email.trim(), password, displayName.trim());
+      navigate('/', { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sign up failed')
+      setError(err instanceof Error ? err.message : 'Sign up failed');
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="auth-page">
@@ -92,7 +92,7 @@ function SignUpPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default SignUpPage
+export default SignUpPage;

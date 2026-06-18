@@ -48,7 +48,7 @@ test.describe('High Score', () => {
     for (let i = 0; i < 20; i++) {
       await page.locator('.drop-zone').click();
       await page.waitForTimeout(200);
-      
+
       if (await page.locator('.game-over-overlay').isVisible()) {
         break;
       }
@@ -59,7 +59,7 @@ test.describe('High Score', () => {
     // Check if high score was updated (if score exceeded previous high)
     const finalHighScoreText = await page.locator('.high-score').textContent();
     const finalHighScore = parseInt(finalHighScoreText?.match(/\d+/)?.[0] || '0', 10);
-    
+
     // High score should be >= initial high score
     expect(finalHighScore).toBeGreaterThanOrEqual(initialHighScore);
   });
@@ -86,7 +86,7 @@ test.describe('High Score', () => {
     for (let i = 0; i < 20; i++) {
       await page.locator('.drop-zone').click();
       await page.waitForTimeout(200);
-      
+
       if (await page.locator('.game-over-overlay').isVisible()) {
         break;
       }
@@ -98,10 +98,9 @@ test.describe('High Score', () => {
     // Note: This depends on actually achieving a higher score
     const newHighScoreMessage = page.locator('.new-high-score');
     const isVisible = await newHighScoreMessage.isVisible().catch(() => false);
-    
+
     // Either the message is visible (new high score) or not (score wasn't high enough)
     // Both are valid outcomes
     expect(typeof isVisible).toBe('boolean');
   });
 });
-

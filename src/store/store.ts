@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit'
-import scoresReducer from './scoresSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import scoresReducer from './scoresSlice';
 // import gameReducer from './gameSlice' // TODO (learning): uncomment after implementing gameSlice
 
 export const store = configureStore({
@@ -7,7 +7,7 @@ export const store = configureStore({
     scores: scoresReducer,
     // game: gameReducer, // TODO (learning): uncomment after implementing gameSlice
   },
-})
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

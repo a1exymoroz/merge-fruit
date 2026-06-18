@@ -52,4 +52,3 @@ test.describe('Game Initialization', () => {
     await expect(page.locator('.game-over-overlay')).not.toBeVisible();
   });
 });
-

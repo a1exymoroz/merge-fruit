@@ -20,11 +20,13 @@ A physics-based puzzle game built with React and Matter.js! Drop fruits into a c
 ### Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -75,16 +77,19 @@ The project includes end-to-end (e2e) tests using Playwright.
 ### Running Tests
 
 1. **Run all e2e tests:**
+
    ```bash
    npm run test:e2e
    ```
 
 2. **Run tests in UI mode (interactive):**
+
    ```bash
    npm run test:e2e:ui
    ```
 
 3. **Run tests in headed mode (see browser):**
+
    ```bash
    npm run test:e2e:headed
    ```
@@ -97,6 +102,7 @@ The project includes end-to-end (e2e) tests using Playwright.
 ### Test Coverage
 
 The e2e tests cover:
+
 - Game initialization and UI elements
 - Fruit dropping mechanics
 - Fruit merging functionality

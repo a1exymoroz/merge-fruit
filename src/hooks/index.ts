@@ -1,3 +1,2 @@
 // Hooks exports
-export * from './useGamePhysics'
-
+export * from './useGamePhysics';

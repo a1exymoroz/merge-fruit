@@ -1,3 +1,2 @@
 // Utils exports
-export * from './fruitUtils'
-
+export * from './fruitUtils';

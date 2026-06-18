@@ -66,9 +66,15 @@
   font-weight: bold;
 }
 
-.leaderboard-entry:nth-child(1) .rank { color: #ffd700; }
-.leaderboard-entry:nth-child(2) .rank { color: #c0c0c0; }
-.leaderboard-entry:nth-child(3) .rank { color: #cd7f32; }
+.leaderboard-entry:nth-child(1) .rank {
+  color: #ffd700;
+}
+.leaderboard-entry:nth-child(2) .rank {
+  color: #c0c0c0;
+}
+.leaderboard-entry:nth-child(3) .rank {
+  color: #cd7f32;
+}
 
 .leaderboard-entry .name {
   flex: 1;

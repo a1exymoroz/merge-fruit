@@ -15,7 +15,7 @@ test.describe('Game Over', () => {
     for (let i = 0; i < 30; i++) {
       await page.locator('.drop-zone').click();
       await page.waitForTimeout(200); // Small delay between drops
-      
+
       // Check if game over appeared
       const gameOverVisible = await page.locator('.game-over-overlay').isVisible();
       if (gameOverVisible) {
@@ -36,7 +36,7 @@ test.describe('Game Over', () => {
     for (let i = 0; i < 30; i++) {
       await page.locator('.drop-zone').click();
       await page.waitForTimeout(200);
-      
+
       if (await page.locator('.game-over-overlay').isVisible()) {
         break;
       }
@@ -53,7 +53,7 @@ test.describe('Game Over', () => {
     for (let i = 0; i < 30; i++) {
       await page.locator('.drop-zone').click();
       await page.waitForTimeout(200);
-      
+
       if (await page.locator('.game-over-overlay').isVisible()) {
         break;
       }
@@ -70,7 +70,7 @@ test.describe('Game Over', () => {
     for (let i = 0; i < 30; i++) {
       await page.locator('.drop-zone').click();
       await page.waitForTimeout(200);
-      
+
       if (await page.locator('.game-over-overlay').isVisible()) {
         break;
       }
@@ -108,4 +108,3 @@ test.describe('Game Over', () => {
     await expect(page.locator('.drop-zone')).toBeVisible();
   });
 });
-
