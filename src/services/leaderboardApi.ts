@@ -2,6 +2,7 @@ import { SCORES_API_URL } from '../config/api';
 import { getAuthHeaders } from '../utils/authStorage';
 
 export interface LeaderboardEntry {
+  id?: number;
   name: string;
   score: number;
   timestamp: string;
@@ -45,14 +46,14 @@ export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
   return normalizeLeaderboard(data);
 }
 
-export async function submitScore(name: string, score: number): Promise<SubmitScoreResponse> {
+export async function submitScore(score: number): Promise<SubmitScoreResponse> {
   const response = await fetch(SCORES_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       ...getAuthHeaders(),
     },
-    body: JSON.stringify({ name, score }),
+    body: JSON.stringify({ score }),
   });
 
   if (response.status === 401) {

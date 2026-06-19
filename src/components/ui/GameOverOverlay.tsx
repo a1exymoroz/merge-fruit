@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { submitScore, type LeaderboardEntry } from '../../services/leaderboardApi';
+import { submitScore } from '../../services/leaderboardApi';
 import { selectLeaderboardEntries, updateEntries, useAppDispatch, useAppSelector } from '../../store';
 import './GameOverOverlay.css';
 
@@ -15,20 +15,20 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
   const { user } = useAuth();
   const leaderboard = useAppSelector(selectLeaderboardEntries);
   const isNewHighScore = score > highScore && score > 0;
-  const [name, setName] = useState(user?.displayName ?? '');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [rank, setRank] = useState<number | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || submitting) return;
+  const handleSubmit = async () => {
+    if (submitting || score <= 0) {
+      return;
+    }
 
     try {
       setSubmitting(true);
       setError(null);
-      const result = await submitScore(name.trim(), score);
+      const result = await submitScore(score);
       setSubmitted(true);
       setRank(result.rank);
       dispatch(updateEntries(result.leaderboard));
@@ -49,33 +49,25 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
         {isNewHighScore && <p className="new-high-score">🎉 New High Score! 🎉</p>}
 
         {!submitted ? (
-          <form onSubmit={handleSubmit} className="submit-score-form">
-            <p>Submit your score to the leaderboard:</p>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-              maxLength={20}
-              disabled={submitting}
-            />
-            <button type="submit" disabled={!name.trim() || submitting}>
-              {submitting ? 'Submitting...' : 'Submit Score'}
+          <div className="submit-score-form">
+            <p>Save your score as {user?.displayName}?</p>
+            <button type="button" onClick={handleSubmit} disabled={submitting || score <= 0}>
+              {submitting ? 'Saving...' : 'Save Score'}
             </button>
             {error && <p className="submit-error">{error}</p>}
-          </form>
+          </div>
         ) : (
           <div className="score-submitted">
             {rank && rank <= 10 ? (
               <p className="rank-message">🏆 You ranked #{rank}!</p>
             ) : (
-              <p className="rank-message">Score submitted!</p>
+              <p className="rank-message">Score saved!</p>
             )}
             <div className="mini-leaderboard">
               <h4>🏆 Top 10</h4>
               <ol>
                 {leaderboard.map((entry, index) => (
-                  <li key={`${entry.name}-${index}`}>
+                  <li key={`${entry.name}-${entry.id ?? index}`}>
                     <span className="lb-name">{entry.name}</span>
                     <span className="lb-score">{entry.score.toLocaleString()}</span>
                   </li>
