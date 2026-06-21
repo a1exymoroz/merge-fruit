@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { getVerifyEmailPath } from '../../utils/verifyEmailPath';
 import '../ui/AuthForm.css';
 
 function SignUpPage() {
@@ -19,7 +20,13 @@ function SignUpPage() {
     try {
       setSubmitting(true);
       setError(null);
-      await signUp(email.trim(), password, displayName.trim());
+      const user = await signUp(email.trim(), password, displayName.trim());
+
+      if (!user.emailVerified && user.verificationToken) {
+        navigate(getVerifyEmailPath(user.verificationToken), { replace: true });
+        return;
+      }
+
       navigate('/', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign up failed');

@@ -7,6 +7,8 @@ export interface AuthResponse {
   email: string;
   displayName: string;
   role: string;
+  emailVerified?: boolean;
+  verificationToken?: string;
 }
 
 interface ErrorResponse {
@@ -51,4 +53,20 @@ export async function login(email: string, password: string): Promise<AuthRespon
   });
 
   return parseAuthResponse(response);
+}
+
+export async function verifyEmail(token: string, code: string): Promise<void> {
+  const params = new URLSearchParams({ token, code });
+  const response = await fetch(`${AUTH_API_URL}/verify?${params.toString()}`);
+
+  if (!response.ok) {
+    let message = 'Email verification failed';
+    try {
+      const error = (await response.json()) as ErrorResponse;
+      message = error.message || error.error || message;
+    } catch {
+      // Use default message when response body is not JSON.
+    }
+    throw new Error(message);
+  }
 }

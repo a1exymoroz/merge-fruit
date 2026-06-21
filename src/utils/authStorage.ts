@@ -6,6 +6,8 @@ export interface StoredAuth {
   email: string;
   displayName: string;
   role: string;
+  emailVerified: boolean;
+  verificationToken?: string;
 }
 
 export function getStoredAuth(): StoredAuth | null {
@@ -19,7 +21,10 @@ export function getStoredAuth(): StoredAuth | null {
       return null;
     }
 
-    return auth;
+    return {
+      ...auth,
+      emailVerified: auth.emailVerified ?? !auth.verificationToken,
+    };
   } catch {
     clearStoredAuth();
     return null;

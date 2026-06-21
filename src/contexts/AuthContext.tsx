@@ -18,9 +18,11 @@ import {
 interface AuthContextValue {
   user: StoredAuth | null;
   isAuthenticated: boolean;
+  isEmailVerified: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, displayName: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<StoredAuth>;
+  signUp: (email: string, password: string, displayName: string) => Promise<StoredAuth>;
+  markEmailVerified: () => void;
   logout: () => void;
 }
 
@@ -32,6 +34,8 @@ function persistAuthResponse(response: {
   email: string;
   displayName: string;
   role: string;
+  emailVerified?: boolean;
+  verificationToken?: string;
 }): StoredAuth {
   const auth: StoredAuth = {
     accessToken: response.accessToken,
@@ -39,6 +43,8 @@ function persistAuthResponse(response: {
     email: response.email,
     displayName: response.displayName,
     role: response.role,
+    emailVerified: response.emailVerified ?? !response.verificationToken,
+    verificationToken: response.verificationToken,
   };
 
   setStoredAuth(auth);
@@ -56,12 +62,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const response = await loginRequest(email, password);
-    setUser(persistAuthResponse(response));
+    const auth = persistAuthResponse(response);
+    setUser(auth);
+    return auth;
   }, []);
 
   const signUp = useCallback(async (email: string, password: string, displayName: string) => {
     const response = await signUpRequest(email, password, displayName);
-    setUser(persistAuthResponse(response));
+    const auth = persistAuthResponse(response);
+    setUser(auth);
+    return auth;
+  }, []);
+
+  const markEmailVerified = useCallback(() => {
+    setUser((current) => {
+      if (!current) {
+        return current;
+      }
+
+      const updated: StoredAuth = {
+        ...current,
+        emailVerified: true,
+        verificationToken: undefined,
+      };
+      setStoredAuth(updated);
+      return updated;
+    });
   }, []);
 
   const logout = useCallback(() => {
@@ -73,12 +99,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       user,
       isAuthenticated: user !== null,
+      isEmailVerified: user?.emailVerified ?? false,
       isLoading,
       login,
       signUp,
+      markEmailVerified,
       logout,
     }),
-    [user, isLoading, login, signUp, logout],
+    [user, isLoading, login, signUp, markEmailVerified, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

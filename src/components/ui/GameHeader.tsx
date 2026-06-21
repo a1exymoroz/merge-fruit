@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './GameHeader.css';
+import '../containers/VerifyEmailPage.css';
 
 interface GameHeaderProps {
   score: number;
@@ -18,6 +19,12 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
 
   return (
     <div className="game-header">
+      {!user?.emailVerified && user?.verificationToken && (
+        <div className="verify-banner">
+          <span>Please verify your email to secure your account.</span>
+          <Link to={`/verify?token=${user.verificationToken}`}>Verify</Link>
+        </div>
+      )}
       <div className="auth-user-bar">
         <span>Hi, {user?.displayName}</span>
         <button type="button" onClick={handleLogout}>

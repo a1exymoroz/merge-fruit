@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { getVerifyEmailPath } from '../../utils/verifyEmailPath';
 import '../ui/AuthForm.css';
 
 function LoginPage() {
@@ -18,7 +19,13 @@ function LoginPage() {
     try {
       setSubmitting(true);
       setError(null);
-      await login(email.trim(), password);
+      const user = await login(email.trim(), password);
+
+      if (!user.emailVerified && user.verificationToken) {
+        navigate(getVerifyEmailPath(user.verificationToken), { replace: true });
+        return;
+      }
+
       navigate('/', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
