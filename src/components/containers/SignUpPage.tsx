@@ -101,7 +101,7 @@ function SignUpPage() {
         </form>
 
         <p className="auth-footer">
-          <Trans i18nKey="auth.hasAccount" components={{ link: <Link to="/login" /> }} />
+          <Trans i18nKey="auth.hasAccount" components={{ loginLink: <Link to="/login" /> }} />
         </p>
       </div>
     </div>

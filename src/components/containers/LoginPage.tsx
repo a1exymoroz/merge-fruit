@@ -98,7 +98,7 @@ function LoginPage() {
         </form>
 
         <p className="auth-footer">
-          <Trans i18nKey="auth.noAccount" components={{ link: <Link to="/signup" /> }} />
+          <Trans i18nKey="auth.noAccount" components={{ signupLink: <Link to="/signup" /> }} />
         </p>
       </div>
     </div>
