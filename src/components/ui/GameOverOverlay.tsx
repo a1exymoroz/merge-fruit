@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { submitScore } from '../../services/leaderboardApi';
+import { translateError } from '../../i18n/translateError';
 import { selectLeaderboardEntries, updateEntries, useAppDispatch, useAppSelector } from '../../store';
 import './GameOverOverlay.css';
 
@@ -11,6 +13,7 @@ interface GameOverOverlayProps {
 }
 
 function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { user } = useAuth();
   const leaderboard = useAppSelector(selectLeaderboardEntries);
@@ -33,7 +36,8 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
       setRank(result.rank);
       dispatch(updateEntries(result.leaderboard));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit score');
+      const message = err instanceof Error ? err.message : 'Failed to submit score';
+      setError(translateError(t, message));
     } finally {
       setSubmitting(false);
     }
@@ -42,29 +46,33 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
   return (
     <div className="game-over-overlay">
       <div className="game-over">
-        <h2>Game Over!</h2>
+        <h2>{t('game.gameOver')}</h2>
         <p className="final-score">
-          Final Score: <strong>{score.toLocaleString()}</strong>
+          <Trans
+            i18nKey="game.finalScore"
+            values={{ score: score.toLocaleString() }}
+            components={{ strong: <strong /> }}
+          />
         </p>
-        {isNewHighScore && <p className="new-high-score">🎉 New High Score! 🎉</p>}
+        {isNewHighScore && <p className="new-high-score">{t('game.newHighScore')}</p>}
 
         {!submitted ? (
           <div className="submit-score-form">
-            <p>Save your score as {user?.displayName}?</p>
+            <p>{t('game.saveScorePrompt', { name: user?.displayName })}</p>
             <button type="button" onClick={handleSubmit} disabled={submitting || score <= 0}>
-              {submitting ? 'Saving...' : 'Save Score'}
+              {submitting ? t('game.saving') : t('game.saveScore')}
             </button>
             {error && <p className="submit-error">{error}</p>}
           </div>
         ) : (
           <div className="score-submitted">
             {rank && rank <= 10 ? (
-              <p className="rank-message">🏆 You ranked #{rank}!</p>
+              <p className="rank-message">{t('game.ranked', { rank })}</p>
             ) : (
-              <p className="rank-message">Score saved!</p>
+              <p className="rank-message">{t('game.scoreSaved')}</p>
             )}
             <div className="mini-leaderboard">
-              <h4>🏆 Top 10</h4>
+              <h4>{t('leaderboard.title')}</h4>
               <ol>
                 {leaderboard.map((entry, index) => (
                   <li key={`${entry.name}-${entry.id ?? index}`}>
@@ -78,7 +86,7 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
         )}
 
         <button onClick={onPlayAgain} className="play-again-btn">
-          Play Again
+          {t('game.playAgain')}
         </button>
       </div>
     </div>

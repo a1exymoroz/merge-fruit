@@ -1,5 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
+import LanguageSwitcher from './LanguageSwitcher';
 import './GameHeader.css';
 import '../containers/VerifyEmailPage.css';
 
@@ -9,6 +11,7 @@ interface GameHeaderProps {
 }
 
 function GameHeader({ score, highScore }: GameHeaderProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
@@ -17,24 +20,36 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
     navigate('/login', { replace: true });
   };
 
+  const userInitial = user?.displayName?.charAt(0).toUpperCase() ?? '?';
+
   return (
     <div className="game-header">
+      <div className="game-header-toolbar">
+        <div className="game-header-user">
+          <span className="user-avatar" aria-hidden="true">
+            {userInitial}
+          </span>
+          <span className="user-greeting">{t('auth.hi', { name: user?.displayName })}</span>
+        </div>
+        <div className="game-header-actions">
+          <LanguageSwitcher variant="pills" />
+          <button type="button" className="logout-btn" onClick={handleLogout}>
+            {t('auth.logOut')}
+          </button>
+        </div>
+      </div>
+
       {!user?.emailVerified && user?.verificationToken && (
         <div className="verify-banner">
-          <span>Please verify your email to secure your account.</span>
-          <Link to={`/verify?token=${user.verificationToken}`}>Verify</Link>
+          <span>{t('auth.verifyBanner')}</span>
+          <Link to={`/verify?token=${user.verificationToken}`}>{t('auth.verify')}</Link>
         </div>
       )}
-      <div className="auth-user-bar">
-        <span>Hi, {user?.displayName}</span>
-        <button type="button" onClick={handleLogout}>
-          Log out
-        </button>
-      </div>
-      <h1>🍎 Fruit Merge 🍎</h1>
+
+      <h1>{t('common.appTitleGame')}</h1>
       <div className="scores">
-        <div className="score">Score: {score}</div>
-        <div className="high-score">High Score: {highScore}</div>
+        <div className="score">{t('game.score', { score })}</div>
+        <div className="high-score">{t('game.highScore', { score: highScore })}</div>
       </div>
     </div>
   );

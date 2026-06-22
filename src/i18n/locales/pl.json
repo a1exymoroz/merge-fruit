@@ -1,0 +1,90 @@
+{
+  "common": {
+    "appTitle": "🍎 Fruit Merge",
+    "appTitleGame": "🍎 Fruit Merge 🍎",
+    "loading": "Ładowanie...",
+    "email": "E-mail",
+    "password": "Hasło",
+    "emailPlaceholder": "ty@example.com",
+    "passwordPlaceholder": "Co najmniej 8 znaków"
+  },
+  "language": {
+    "label": "Język",
+    "en": "English",
+    "pl": "Polski",
+    "ru": "Русский"
+  },
+  "auth": {
+    "signInToPlay": "Zaloguj się, aby grać",
+    "signIn": "Zaloguj się",
+    "signingIn": "Logowanie...",
+    "noAccount": "Nie masz konta? <link>Zarejestruj się</link>",
+    "createAccount": "Utwórz konto",
+    "displayName": "Nazwa wyświetlana",
+    "displayNamePlaceholder": "Twoja nazwa w rankingu",
+    "signUp": "Zarejestruj się",
+    "creatingAccount": "Tworzenie konta...",
+    "hasAccount": "Masz już konto? <link>Zaloguj się</link>",
+    "verifyEmail": "Zweryfikuj swój e-mail",
+    "emailVerified": "E-mail zweryfikowany!",
+    "emailVerifiedMessage": "Twój e-mail został zweryfikowany.",
+    "continueToGame": "Przejdź do gry",
+    "openVerificationLink": "Otwórz link weryfikacyjny z e-maila, aby kontynuować.",
+    "enterCode": "Wpisz 4-cyfrowy kod z e-maila.",
+    "digitLabel": "Cyfra {{number}}",
+    "verifying": "Weryfikacja...",
+    "verifyEmailButton": "Zweryfikuj e-mail",
+    "backToSignIn": "Wróć do logowania",
+    "checkEmailMessage": "Sprawdź e-mail z linkiem weryfikacyjnym, a następnie wpisz 4-cyfrowy kod.",
+    "verifyBanner": "Zweryfikuj swój e-mail, aby zabezpieczyć konto.",
+    "verify": "Zweryfikuj",
+    "hi": "Cześć, {{name}}",
+    "logOut": "Wyloguj się"
+  },
+  "game": {
+    "score": "Wynik: {{score}}",
+    "highScore": "Rekord: {{score}}",
+    "nextFruit": "Następny owoc:",
+    "resetGame": "Resetuj grę",
+    "gameOverLine": "Linia końca gry",
+    "releaseToDrop": "Puść, aby upuścić",
+    "moveToPosition": "Ustaw pozycję • Kliknij/Spacja, aby upuścić",
+    "gameOver": "Koniec gry!",
+    "finalScore": "Końcowy wynik: <strong>{{score}}</strong>",
+    "newHighScore": "🎉 Nowy rekord! 🎉",
+    "saveScorePrompt": "Zapisać wynik jako {{name}}?",
+    "saving": "Zapisywanie...",
+    "saveScore": "Zapisz wynik",
+    "ranked": "🏆 Zająłeś/aś {{rank}}. miejsce!",
+    "scoreSaved": "Wynik zapisany!",
+    "playAgain": "Zagraj ponownie"
+  },
+  "instructions": {
+    "title": "Jak grać:",
+    "desktop": "<strong>Komputer:</strong> Poruszaj myszą, aby ustawić owoc, kliknij lub naciśnij Spację, aby upuścić",
+    "mobile": "<strong>Telefon:</strong> Dotknij i przeciągnij, aby ustawić pozycję, puść, aby upuścić",
+    "merge": "Gdy 2 identyczne owoce się dotkną, natychmiast łączą się w większy owoc!",
+    "chain": "Reakcje łańcuchowe występują, gdy połączone owoce dotykają kolejnych identycznych owoców",
+    "physics": "Owoce tocą się, przechylają i układają realistycznie — wykorzystaj fizykę na swoją korzyść!",
+    "gameOverRule": "Nie pozwól, aby owoce ułożyły się powyżej linii końca gry przez 2 sekundy!",
+    "goal": "Cel: Dotrzyj do arbuza! 🍉"
+  },
+  "leaderboard": {
+    "title": "🏆 Top 10",
+    "loading": "Ładowanie...",
+    "retry": "Spróbuj ponownie",
+    "empty": "Brak wyników. Bądź pierwszy!"
+  },
+  "errors": {
+    "loginFailed": "Logowanie nie powiodło się",
+    "signUpFailed": "Rejestracja nie powiodła się",
+    "verificationFailed": "Weryfikacja nie powiodła się",
+    "authenticationFailed": "Uwierzytelnianie nie powiodło się",
+    "emailVerificationFailed": "Weryfikacja e-maila nie powiodła się",
+    "failedToSubmitScore": "Nie udało się zapisać wyniku",
+    "failedToFetchLeaderboard": "Nie udało się pobrać rankingu",
+    "failedToLoadScores": "Nie udało się załadować wyników",
+    "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
+    "tooManyRequests": "Zbyt wiele żądań. Poczekaj chwilę."
+  }
+}

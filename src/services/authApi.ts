@@ -14,18 +14,33 @@ export interface AuthResponse {
 interface ErrorResponse {
   message?: string;
   error?: string;
+  verificationToken?: string;
+}
+
+export class AuthApiError extends Error {
+  status: number;
+  verificationToken?: string;
+
+  constructor(message: string, status: number, verificationToken?: string) {
+    super(message);
+    this.name = 'AuthApiError';
+    this.status = status;
+    this.verificationToken = verificationToken;
+  }
 }
 
 async function parseAuthResponse(response: Response): Promise<AuthResponse> {
   if (!response.ok) {
     let message = 'Authentication failed';
+    let verificationToken: string | undefined;
     try {
       const error = (await response.json()) as ErrorResponse;
       message = error.message || error.error || message;
+      verificationToken = error.verificationToken;
     } catch {
       // Use default message when response body is not JSON.
     }
-    throw new Error(message);
+    throw new AuthApiError(message, response.status, verificationToken);
   }
 
   return response.json() as Promise<AuthResponse>;

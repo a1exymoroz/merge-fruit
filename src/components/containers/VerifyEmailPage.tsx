@@ -1,14 +1,20 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { verifyEmail } from '../../services/authApi';
 import { useAuth } from '../../contexts/AuthContext';
+import { translateError } from '../../i18n/translateError';
+import LanguageSwitcher from '../ui/LanguageSwitcher';
 import '../ui/AuthForm.css';
 import './VerifyEmailPage.css';
 
 const CODE_LENGTH = 4;
 
 function VerifyEmailPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectMessageKey = (location.state as { messageKey?: string } | null)?.messageKey;
   const { markEmailVerified } = useAuth();
   const { token: routeToken } = useParams<{ token: string }>();
   const [searchParams] = useSearchParams();
@@ -68,7 +74,8 @@ function VerifyEmailPage() {
       markEmailVerified();
       setVerified(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Verification failed');
+      const message = err instanceof Error ? err.message : 'Verification failed';
+      setError(translateError(t, message));
     } finally {
       setSubmitting(false);
     }
@@ -78,11 +85,14 @@ function VerifyEmailPage() {
     return (
       <div className="auth-page">
         <div className="auth-card">
-          <h1>🍎 Fruit Merge</h1>
-          <p className="auth-subtitle">Invalid verification link</p>
-          <p className="auth-error">This link is missing a verification token.</p>
+          <LanguageSwitcher className="language-switcher--auth" />
+          <h1>{t('common.appTitle')}</h1>
+          <p className="auth-subtitle">{t('auth.verifyEmail')}</p>
+          <p className="verify-hint">
+            {redirectMessageKey ? t(redirectMessageKey) : t('auth.openVerificationLink')}
+          </p>
           <p className="auth-footer">
-            <Link to="/login">Back to sign in</Link>
+            <Link to="/login">{t('auth.backToSignIn')}</Link>
           </p>
         </div>
       </div>
@@ -93,11 +103,12 @@ function VerifyEmailPage() {
     return (
       <div className="auth-page">
         <div className="auth-card">
-          <h1>🍎 Fruit Merge</h1>
-          <p className="auth-subtitle">Email verified!</p>
-          <p className="verify-success">Your email has been verified.</p>
+          <LanguageSwitcher className="language-switcher--auth" />
+          <h1>{t('common.appTitle')}</h1>
+          <p className="auth-subtitle">{t('auth.emailVerified')}</p>
+          <p className="verify-success">{t('auth.emailVerifiedMessage')}</p>
           <button type="button" className="auth-submit" onClick={() => navigate('/', { replace: true })}>
-            Continue to Game
+            {t('auth.continueToGame')}
           </button>
         </div>
       </div>
@@ -107,9 +118,11 @@ function VerifyEmailPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h1>🍎 Fruit Merge</h1>
-        <p className="auth-subtitle">Verify your email</p>
-        <p className="verify-hint">Enter the 4-digit code from your email.</p>
+        <LanguageSwitcher className="language-switcher--auth" />
+        <h1>{t('common.appTitle')}</h1>
+        <p className="auth-subtitle">{t('auth.verifyEmail')}</p>
+        {redirectMessageKey && <p className="verify-hint">{t(redirectMessageKey)}</p>}
+        {!redirectMessageKey && <p className="verify-hint">{t('auth.enterCode')}</p>}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="verify-code-inputs">
@@ -127,7 +140,7 @@ function VerifyEmailPage() {
                 onKeyDown={(event) => handleKeyDown(index, event)}
                 onPaste={handlePaste}
                 disabled={submitting}
-                aria-label={`Digit ${index + 1}`}
+                aria-label={t('auth.digitLabel', { number: index + 1 })}
                 className="verify-code-digit"
               />
             ))}
@@ -136,7 +149,7 @@ function VerifyEmailPage() {
           {error && <p className="auth-error">{error}</p>}
 
           <button type="submit" className="auth-submit" disabled={!canSubmit}>
-            {submitting ? 'Verifying...' : 'Verify Email'}
+            {submitting ? t('auth.verifying') : t('auth.verifyEmailButton')}
           </button>
         </form>
       </div>

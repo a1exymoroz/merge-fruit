@@ -1,5 +1,7 @@
 import { useEffect, useImperativeHandle, forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { fetchScores, useAppDispatch, useAppSelector } from '../../store';
+import { translateError } from '../../i18n/translateError';
 import {
   selectLeaderboardEntries,
   selectScoresError,
@@ -12,6 +14,7 @@ export interface LeaderboardRef {
 }
 
 const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const entries = useAppSelector(selectLeaderboardEntries);
   const loading = useAppSelector(selectScoresLoading);
@@ -32,8 +35,8 @@ const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
   if (loading) {
     return (
       <div className="leaderboard">
-        <h3>🏆 Top 10</h3>
-        <p className="leaderboard-loading">Loading...</p>
+        <h3>{t('leaderboard.title')}</h3>
+        <p className="leaderboard-loading">{t('leaderboard.loading')}</p>
       </div>
     );
   }
@@ -41,10 +44,10 @@ const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
   if (error) {
     return (
       <div className="leaderboard">
-        <h3>🏆 Top 10</h3>
-        <p className="leaderboard-error">{error}</p>
+        <h3>{t('leaderboard.title')}</h3>
+        <p className="leaderboard-error">{translateError(t, error)}</p>
         <button onClick={loadLeaderboard} className="retry-button">
-          Retry
+          {t('leaderboard.retry')}
         </button>
       </div>
     );
@@ -52,9 +55,9 @@ const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
 
   return (
     <div className="leaderboard">
-      <h3>🏆 Top 10</h3>
+      <h3>{t('leaderboard.title')}</h3>
       {entries.length === 0 ? (
-        <p className="leaderboard-empty">No scores yet. Be the first!</p>
+        <p className="leaderboard-empty">{t('leaderboard.empty')}</p>
       ) : (
         <ol className="leaderboard-list">
           {entries.map((entry, index) => (

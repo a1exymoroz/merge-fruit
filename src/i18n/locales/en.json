@@ -1,0 +1,90 @@
+{
+  "common": {
+    "appTitle": "🍎 Fruit Merge",
+    "appTitleGame": "🍎 Fruit Merge 🍎",
+    "loading": "Loading...",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "At least 8 characters"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "pl": "Polski",
+    "ru": "Русский"
+  },
+  "auth": {
+    "signInToPlay": "Sign in to play",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account? <link>Sign up</link>",
+    "createAccount": "Create your account",
+    "displayName": "Display name",
+    "displayNamePlaceholder": "Your leaderboard name",
+    "signUp": "Sign Up",
+    "creatingAccount": "Creating account...",
+    "hasAccount": "Already have an account? <link>Sign in</link>",
+    "verifyEmail": "Verify your email",
+    "emailVerified": "Email verified!",
+    "emailVerifiedMessage": "Your email has been verified.",
+    "continueToGame": "Continue to Game",
+    "openVerificationLink": "Open the verification link from your email to continue.",
+    "enterCode": "Enter the 4-digit code from your email.",
+    "digitLabel": "Digit {{number}}",
+    "verifying": "Verifying...",
+    "verifyEmailButton": "Verify Email",
+    "backToSignIn": "Back to sign in",
+    "checkEmailMessage": "Please check your email for the verification link, then enter your 4-digit code.",
+    "verifyBanner": "Please verify your email to secure your account.",
+    "verify": "Verify",
+    "hi": "Hi, {{name}}",
+    "logOut": "Log out"
+  },
+  "game": {
+    "score": "Score: {{score}}",
+    "highScore": "High Score: {{score}}",
+    "nextFruit": "Next Fruit:",
+    "resetGame": "Reset Game",
+    "gameOverLine": "Game Over Line",
+    "releaseToDrop": "Release to Drop",
+    "moveToPosition": "Move to Position • Click/Space to Drop",
+    "gameOver": "Game Over!",
+    "finalScore": "Final Score: <strong>{{score}}</strong>",
+    "newHighScore": "🎉 New High Score! 🎉",
+    "saveScorePrompt": "Save your score as {{name}}?",
+    "saving": "Saving...",
+    "saveScore": "Save Score",
+    "ranked": "🏆 You ranked #{{rank}}!",
+    "scoreSaved": "Score saved!",
+    "playAgain": "Play Again"
+  },
+  "instructions": {
+    "title": "How to Play:",
+    "desktop": "<strong>Desktop:</strong> Move mouse to position fruit, click or press Space to drop",
+    "mobile": "<strong>Mobile:</strong> Touch and drag to position, release to drop",
+    "merge": "When 2 identical fruits touch, they instantly merge into the next larger fruit!",
+    "chain": "Chain reactions occur when merged fruits touch more identical fruits",
+    "physics": "Fruits roll, tip, and stack realistically - use physics to your advantage!",
+    "gameOverRule": "Don't let fruits stack above the Game Over line for 2 seconds!",
+    "goal": "Goal: Reach the Watermelon! 🍉"
+  },
+  "leaderboard": {
+    "title": "🏆 Top 10",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "empty": "No scores yet. Be the first!"
+  },
+  "errors": {
+    "loginFailed": "Login failed",
+    "signUpFailed": "Sign up failed",
+    "verificationFailed": "Verification failed",
+    "authenticationFailed": "Authentication failed",
+    "emailVerificationFailed": "Email verification failed",
+    "failedToSubmitScore": "Failed to submit score",
+    "failedToFetchLeaderboard": "Failed to fetch leaderboard",
+    "failedToLoadScores": "Failed to load scores",
+    "sessionExpired": "Session expired. Please sign in again.",
+    "tooManyRequests": "Too many requests. Please wait a moment."
+  }
+}

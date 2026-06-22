@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
+import { translateError } from '../../i18n/translateError';
 import { getVerifyEmailPath } from '../../utils/verifyEmailPath';
+import LanguageSwitcher from '../ui/LanguageSwitcher';
 import '../ui/AuthForm.css';
 
 function SignUpPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { signUp } = useAuth();
   const [email, setEmail] = useState('');
@@ -29,7 +33,8 @@ function SignUpPage() {
 
       navigate('/', { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sign up failed');
+      const message = err instanceof Error ? err.message : 'Sign up failed';
+      setError(translateError(t, message));
     } finally {
       setSubmitting(false);
     }
@@ -38,18 +43,19 @@ function SignUpPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h1>🍎 Fruit Merge</h1>
-        <p className="auth-subtitle">Create your account</p>
+        <LanguageSwitcher className="language-switcher--auth" />
+        <h1>{t('common.appTitle')}</h1>
+        <p className="auth-subtitle">{t('auth.createAccount')}</p>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="auth-field">
-            <label htmlFor="displayName">Display name</label>
+            <label htmlFor="displayName">{t('auth.displayName')}</label>
             <input
               id="displayName"
               type="text"
               value={displayName}
               onChange={(event) => setDisplayName(event.target.value)}
-              placeholder="Your leaderboard name"
+              placeholder={t('auth.displayNamePlaceholder')}
               autoComplete="nickname"
               minLength={2}
               maxLength={50}
@@ -59,13 +65,13 @@ function SignUpPage() {
           </div>
 
           <div className="auth-field">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('common.email')}</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
+              placeholder={t('common.emailPlaceholder')}
               autoComplete="email"
               required
               disabled={submitting}
@@ -73,13 +79,13 @@ function SignUpPage() {
           </div>
 
           <div className="auth-field">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('common.password')}</label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="At least 8 characters"
+              placeholder={t('common.passwordPlaceholder')}
               autoComplete="new-password"
               minLength={8}
               required
@@ -90,12 +96,12 @@ function SignUpPage() {
           {error && <p className="auth-error">{error}</p>}
 
           <button type="submit" className="auth-submit" disabled={submitting}>
-            {submitting ? 'Creating account...' : 'Sign Up'}
+            {submitting ? t('auth.creatingAccount') : t('auth.signUp')}
           </button>
         </form>
 
         <p className="auth-footer">
-          Already have an account? <Link to="/login">Sign in</Link>
+          <Trans i18nKey="auth.hasAccount" components={{ link: <Link to="/login" /> }} />
         </p>
       </div>
     </div>

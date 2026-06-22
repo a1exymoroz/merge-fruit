@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { type FruitType } from '../../constants/gameConstants';
 import { CONTAINER_WIDTH } from '../../constants/gameConstants';
 import Fruit from '../ui/Fruit';
@@ -11,6 +12,7 @@ interface DropZoneProps {
 }
 
 function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
+  const { t } = useTranslation();
   const [dropPosition, setDropPosition] = useState(CONTAINER_WIDTH / 2);
   const [isDragging, setIsDragging] = useState(false);
   const dropZoneRef = useRef<HTMLDivElement>(null);
@@ -110,7 +112,7 @@ function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
     >
       <div className="drop-indicator">
         <div className="drop-instructions">
-          {isDragging ? 'Release to Drop' : 'Move to Position • Click/Space to Drop'}
+          {isDragging ? t('game.releaseToDrop') : t('game.moveToPosition')}
         </div>
         {nextFruit && (
           <div className="drop-preview" style={{ left: `${dropPosition - nextFruit.radius}px` }}>

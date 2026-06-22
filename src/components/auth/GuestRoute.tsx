@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { getVerifyEmailPath } from '../../utils/verifyEmailPath';
 
@@ -7,10 +8,11 @@ interface GuestRouteProps {
 }
 
 function GuestRoute({ children }: GuestRouteProps) {
+  const { t } = useTranslation();
   const { user, isAuthenticated, isEmailVerified, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div className="auth-loading">Loading...</div>;
+    return <div className="auth-loading">{t('common.loading')}</div>;
   }
 
   if (isAuthenticated && isEmailVerified) {
