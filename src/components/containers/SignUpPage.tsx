@@ -43,7 +43,7 @@ function SignUpPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <LanguageSwitcher className="language-switcher--auth" />
+        <LanguageSwitcher theme="dark" className="language-switcher--auth" />
         <h1>{t('common.appTitle')}</h1>
         <p className="auth-subtitle">{t('auth.createAccount')}</p>
 

@@ -85,7 +85,7 @@ function VerifyEmailPage() {
     return (
       <div className="auth-page">
         <div className="auth-card">
-          <LanguageSwitcher className="language-switcher--auth" />
+          <LanguageSwitcher theme="dark" className="language-switcher--auth" />
           <h1>{t('common.appTitle')}</h1>
           <p className="auth-subtitle">{t('auth.verifyEmail')}</p>
           <p className="verify-hint">
@@ -103,7 +103,7 @@ function VerifyEmailPage() {
     return (
       <div className="auth-page">
         <div className="auth-card">
-          <LanguageSwitcher className="language-switcher--auth" />
+          <LanguageSwitcher theme="dark" className="language-switcher--auth" />
           <h1>{t('common.appTitle')}</h1>
           <p className="auth-subtitle">{t('auth.emailVerified')}</p>
           <p className="verify-success">{t('auth.emailVerifiedMessage')}</p>
@@ -118,7 +118,7 @@ function VerifyEmailPage() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <LanguageSwitcher className="language-switcher--auth" />
+          <LanguageSwitcher theme="dark" className="language-switcher--auth" />
         <h1>{t('common.appTitle')}</h1>
         <p className="auth-subtitle">{t('auth.verifyEmail')}</p>
         {redirectMessageKey && <p className="verify-hint">{t(redirectMessageKey)}</p>}

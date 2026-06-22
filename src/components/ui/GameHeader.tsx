@@ -32,7 +32,7 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
           <span className="user-greeting">{t('auth.hi', { name: user?.displayName })}</span>
         </div>
         <div className="game-header-actions">
-          <LanguageSwitcher variant="pills" />
+          <LanguageSwitcher />
           <button type="button" className="logout-btn" onClick={handleLogout}>
             {t('auth.logOut')}
           </button>
