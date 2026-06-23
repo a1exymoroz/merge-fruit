@@ -1,0 +1,35 @@
+.global-tech-stack-link {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #4c51bf;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(102, 126, 234, 0.35);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.global-tech-stack-link:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+  .global-tech-stack-link {
+    right: 12px;
+    bottom: 12px;
+    font-size: 0.75rem;
+    padding: 7px 12px;
+  }
+}

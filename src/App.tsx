@@ -1,9 +1,10 @@
 import { Provider } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import { MergeFruitGame, LoginPage, SignUpPage, VerifyEmailPage } from './components';
+import { MergeFruitGame, LoginPage, SignUpPage, VerifyEmailPage, TechStackPage } from './components';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import GuestRoute from './components/auth/GuestRoute';
+import GlobalTechStackLink from './components/ui/GlobalTechStackLink';
 import { store } from './store';
 import './App.css';
 
@@ -13,6 +14,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <div className="App">
+            <GlobalTechStackLink />
             <Routes>
               <Route
                 path="/"
@@ -41,6 +43,7 @@ function App() {
               <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
               <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/verify" element={<VerifyEmailPage />} />
+              <Route path="/stack" element={<TechStackPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>

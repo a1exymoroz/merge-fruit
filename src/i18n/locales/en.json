@@ -88,5 +88,50 @@
     "failedToLoadScores": "Failed to load scores",
     "sessionExpired": "Session expired. Please sign in again.",
     "tooManyRequests": "Too many requests. Please wait a moment."
+  },
+  "stack": {
+    "link": "Tech Stack",
+    "title": "Technology Stack",
+    "back": "← Back",
+    "intro": "Merge Fruit is a full-stack app: a React game frontend and a Spring Boot API backend.",
+    "architecture": "Architecture",
+    "archFrontend": "Frontend",
+    "archBackend": "Backend",
+    "hosting": "Hosting",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "layer": "Layer",
+    "tech": "Tech",
+    "diagrams": "Request flows",
+    "viewRepo": "View {{name}} on GitHub",
+    "flow": {
+      "authRequest": {
+        "title": "Typical authenticated request",
+        "step1": "JWT filter validates Bearer token",
+        "step2": "Controller handles REST endpoint",
+        "step3": "Service runs business logic",
+        "step4": "PostgreSQL via JPA / Hibernate"
+      },
+      "signup": {
+        "title": "Signup",
+        "step1": "Validate input (Jakarta Validation)",
+        "step2": "Hash password with BCrypt",
+        "step3": "Save user in PostgreSQL",
+        "step4": "Send verification email (Brevo)",
+        "step5": "Return JWT to client"
+      },
+      "login": {
+        "title": "Login",
+        "step1": "AuthenticationManager",
+        "step2": "DaoAuthenticationProvider (BCrypt check)",
+        "step3": "Issue JWT"
+      },
+      "protected": {
+        "title": "Protected requests",
+        "step1": "Client sends Authorization: Bearer <JWT>",
+        "step2": "No password on subsequent requests",
+        "step3": "JWT filter authorizes access"
+      }
+    }
   }
 }

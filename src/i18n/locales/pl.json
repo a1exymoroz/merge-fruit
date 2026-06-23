@@ -88,5 +88,50 @@
     "failedToLoadScores": "Nie udało się załadować wyników",
     "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
     "tooManyRequests": "Zbyt wiele żądań. Poczekaj chwilę."
+  },
+  "stack": {
+    "link": "Stos technologiczny",
+    "title": "Stos technologiczny",
+    "back": "← Wróć",
+    "intro": "Merge Fruit to aplikacja full-stack: frontend gry w React i backend API w Spring Boot.",
+    "architecture": "Architektura",
+    "archFrontend": "Frontend",
+    "archBackend": "Backend",
+    "hosting": "Hosting",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "layer": "Warstwa",
+    "tech": "Technologia",
+    "diagrams": "Przepływy żądań",
+    "viewRepo": "Zobacz {{name}} na GitHubie",
+    "flow": {
+      "authRequest": {
+        "title": "Typowe uwierzytelnione żądanie",
+        "step1": "Filtr JWT weryfikuje token Bearer",
+        "step2": "Kontroler obsługuje endpoint REST",
+        "step3": "Serwis wykonuje logikę biznesową",
+        "step4": "PostgreSQL przez JPA / Hibernate"
+      },
+      "signup": {
+        "title": "Rejestracja",
+        "step1": "Walidacja danych (Jakarta Validation)",
+        "step2": "Hashowanie hasła przez BCrypt",
+        "step3": "Zapis użytkownika w PostgreSQL",
+        "step4": "Wysłanie e-maila weryfikacyjnego (Brevo)",
+        "step5": "Zwrócenie JWT do klienta"
+      },
+      "login": {
+        "title": "Logowanie",
+        "step1": "AuthenticationManager",
+        "step2": "DaoAuthenticationProvider (weryfikacja BCrypt)",
+        "step3": "Wydanie JWT"
+      },
+      "protected": {
+        "title": "Chronione żądania",
+        "step1": "Klient wysyła Authorization: Bearer <JWT>",
+        "step2": "Brak hasła w kolejnych żądaniach",
+        "step3": "Filtr JWT autoryzuje dostęp"
+      }
+    }
   }
 }

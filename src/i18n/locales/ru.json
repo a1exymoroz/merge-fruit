@@ -88,5 +88,50 @@
     "failedToLoadScores": "Не удалось загрузить результаты",
     "sessionExpired": "Сессия истекла. Войдите снова.",
     "tooManyRequests": "Слишком много запросов. Подождите немного."
+  },
+  "stack": {
+    "link": "Технологии",
+    "title": "Технологический стек",
+    "back": "← Назад",
+    "intro": "Merge Fruit — full-stack приложение: игровой фронтенд на React и API на Spring Boot.",
+    "architecture": "Архитектура",
+    "archFrontend": "Фронтенд",
+    "archBackend": "Бэкенд",
+    "hosting": "Хостинг",
+    "frontend": "Фронтенд",
+    "backend": "Бэкенд",
+    "layer": "Слой",
+    "tech": "Технология",
+    "diagrams": "Потоки запросов",
+    "viewRepo": "Открыть {{name}} на GitHub",
+    "flow": {
+      "authRequest": {
+        "title": "Типичный аутентифицированный запрос",
+        "step1": "JWT-фильтр проверяет Bearer-токен",
+        "step2": "Контроллер обрабатывает REST endpoint",
+        "step3": "Сервис выполняет бизнес-логику",
+        "step4": "PostgreSQL через JPA / Hibernate"
+      },
+      "signup": {
+        "title": "Регистрация",
+        "step1": "Валидация данных (Jakarta Validation)",
+        "step2": "Хеширование пароля через BCrypt",
+        "step3": "Сохранение пользователя в PostgreSQL",
+        "step4": "Отправка письма для верификации (Brevo)",
+        "step5": "Возврат JWT клиенту"
+      },
+      "login": {
+        "title": "Вход",
+        "step1": "AuthenticationManager",
+        "step2": "DaoAuthenticationProvider (проверка BCrypt)",
+        "step3": "Выдача JWT"
+      },
+      "protected": {
+        "title": "Защищённые запросы",
+        "step1": "Клиент отправляет Authorization: Bearer <JWT>",
+        "step2": "Пароль не передаётся в последующих запросах",
+        "step3": "JWT-фильтр авторизует доступ"
+      }
+    }
   }
 }
