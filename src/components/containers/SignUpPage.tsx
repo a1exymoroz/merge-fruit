@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { translateError } from '../../i18n/translateError';
 import { getVerifyEmailPath } from '../../utils/verifyEmailPath';
+import ColdStartNotice from '../ui/ColdStartNotice';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import '../ui/AuthForm.css';
 
@@ -46,6 +47,7 @@ function SignUpPage() {
         <LanguageSwitcher theme="dark" className="language-switcher--auth" />
         <h1>{t('common.appTitle')}</h1>
         <p className="auth-subtitle">{t('auth.createAccount')}</p>
+        {!submitting && <ColdStartNotice className="auth-cold-start-notice" />}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="auth-field">
@@ -94,6 +96,7 @@ function SignUpPage() {
           </div>
 
           {error && <p className="auth-error">{error}</p>}
+          {submitting && <ColdStartNotice waiting className="auth-cold-start-notice" />}
 
           <button type="submit" className="auth-submit" disabled={submitting}>
             {submitting ? t('auth.creatingAccount') : t('auth.signUp')}

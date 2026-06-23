@@ -6,7 +6,9 @@
     "email": "E-mail",
     "password": "Hasło",
     "emailPlaceholder": "ty@example.com",
-    "passwordPlaceholder": "Co najmniej 8 znaków"
+    "passwordPlaceholder": "Co najmniej 8 znaków",
+    "coldStartNotice": "Backend działa na darmowym planie Render. Po bezczynności pierwsze żądanie może potrwać do ~50 sekund, zanim serwer się uruchomi. Kolejne żądania będą znacznie szybsze.",
+    "coldStartWaiting": "Uruchamianie serwera… To może potrwać do ~50 sekund. Proszę czekać."
   },
   "language": {
     "label": "Język",

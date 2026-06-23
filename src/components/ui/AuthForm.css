@@ -30,6 +30,10 @@
   margin-bottom: 24px;
 }
 
+.auth-cold-start-notice {
+  margin-bottom: 20px;
+}
+
 .auth-form {
   display: flex;
   flex-direction: column;

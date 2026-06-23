@@ -7,6 +7,7 @@ import {
   selectScoresError,
   selectScoresLoading,
 } from '../../store/selectors';
+import ColdStartNotice from './ColdStartNotice';
 import './Leaderboard.css';
 
 export interface LeaderboardRef {
@@ -37,6 +38,7 @@ const Leaderboard = forwardRef<LeaderboardRef>(function Leaderboard(_, ref) {
       <div className="leaderboard">
         <h3>{t('leaderboard.title')}</h3>
         <p className="leaderboard-loading">{t('leaderboard.loading')}</p>
+        <ColdStartNotice waiting />
       </div>
     );
   }
