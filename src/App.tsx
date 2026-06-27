@@ -5,8 +5,50 @@ import { MergeFruitGame, LoginPage, SignUpPage, VerifyEmailPage, TechStackPage }
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import GuestRoute from './components/auth/GuestRoute';
 import GlobalTechStackLink from './components/ui/GlobalTechStackLink';
+import { useDocumentTitle } from './hooks/useDocumentTitle';
 import { store } from './store';
 import './App.css';
+
+function AppRoutes() {
+  useDocumentTitle();
+
+  return (
+    <>
+      <GlobalTechStackLink />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <MergeFruitGame />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <GuestRoute>
+              <LoginPage />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <GuestRoute>
+              <SignUpPage />
+            </GuestRoute>
+          }
+        />
+        <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/verify" element={<VerifyEmailPage />} />
+        <Route path="/stack" element={<TechStackPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
+  );
+}
 
 function App() {
   return (
@@ -14,38 +56,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <div className="App">
-            <GlobalTechStackLink />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <MergeFruitGame />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <GuestRoute>
-                    <LoginPage />
-                  </GuestRoute>
-                }
-              />
-              <Route
-                path="/signup"
-                element={
-                  <GuestRoute>
-                    <SignUpPage />
-                  </GuestRoute>
-                }
-              />
-              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-              <Route path="/verify-email" element={<VerifyEmailPage />} />
-              <Route path="/verify" element={<VerifyEmailPage />} />
-              <Route path="/stack" element={<TechStackPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <AppRoutes />
           </div>
         </BrowserRouter>
       </AuthProvider>

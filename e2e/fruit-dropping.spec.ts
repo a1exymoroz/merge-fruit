@@ -24,16 +24,14 @@ test.describe('Fruit Dropping', () => {
   });
 
   test('should update next fruit after dropping', async ({ page }) => {
-    // Get the emoji of the next fruit
-    const nextFruitEmoji = await page.locator('.next-fruit .fruit-emoji').textContent();
+    await expect(page.locator('.next-fruit .fruit-sprite')).toBeVisible();
 
     // Drop the fruit
     await page.locator('.drop-zone').click();
     await page.waitForTimeout(300);
 
-    // Next fruit should have changed (might be the same type, but should be a new instance)
-    // We can verify by checking that the next fruit display still exists
-    await expect(page.locator('.next-fruit')).toBeVisible();
+    // Next fruit display should still show a sprite after dropping
+    await expect(page.locator('.next-fruit .fruit-sprite')).toBeVisible();
   });
 
   test('should allow multiple fruit drops', async ({ page }) => {

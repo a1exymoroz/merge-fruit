@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Game Fruits 1-11</title>
+    <style>
+        body { background-color: #f0f0f0; padding: 20px; font-family: sans-serif; }
+        .grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .fruit-container { text-align: center; }
+        svg { width: 120px; height: 120px; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.2)); }
+
+        /* Updated number styling: Transparent fill so fruit details show through! */
+        .lvl {
+            font-family: 'Arial Black', sans-serif;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: central;
+            paint-order: stroke;
+            fill: #ffffff; /* interior transparent-ish contextually, outlined */
+            opacity: 0.6; /* Applied to the entire text element */
+            font-size: 45px;
+            stroke-width: 4px;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Merge Game Fruits (Transparent Numbers)</h2>
+    <div class="grid">
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#4a69bd"/>
+                <path d="M 20 40 Q 35 15 65 20" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4" stroke-linecap="round"/>
+                <path d="M 50 35 L 55 45 L 65 45 L 58 52 L 60 62 L 50 55 L 40 62 L 42 52 L 35 45 L 45 45 Z" fill="#1e3799"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#1e3799">1</text>
+            </svg>
+            <p>1. Blueberry</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#e55039"/>
+                <ellipse cx="30" cy="30" rx="12" ry="6" fill="rgba(255,255,255,0.4)" transform="rotate(-45 30 30)"/>
+                <path d="M 50 15 Q 45 25 50 35" fill="none" stroke="#38ada9" stroke-width="3"/>
+                <path d="M 50 15 Q 65 10 60 25 Q 45 30 50 15 Z" fill="#78e08f"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#b33939">2</text>
+            </svg>
+            <p>2. Cherry</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#8e44ad"/>
+                <circle cx="50" cy="50" r="40" fill="#f39c12"/>
+                <ellipse cx="50" cy="50" rx="14" ry="20" fill="#d35400"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#5e3370">3</text>
+            </svg>
+            <p>3. Plum</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#f1c40f"/>
+                <circle cx="50" cy="50" r="40" fill="#fff9c4"/>
+                <circle cx="50" cy="50" r="37" fill="#f1c40f"/>
+                <line x1="50" y1="13" x2="50" y2="87" stroke="#fff9c4" stroke-width="3"/>
+                <line x1="13" y1="50" x2="87" y2="50" stroke="#fff9c4" stroke-width="3"/>
+                <line x1="24" y1="24" x2="76" y2="76" stroke="#fff9c4" stroke-width="3"/>
+                <line x1="24" y1="76" x2="76" y2="24" stroke="#fff9c4" stroke-width="3"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#e67e22">4</text>
+            </svg>
+            <p>4. Lemon</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#8d6e63"/>
+                <circle cx="50" cy="50" r="38" fill="#9ccc65"/>
+                <circle cx="50" cy="50" r="15" fill="#f4f1ea"/>
+                <circle cx="50" cy="30" r="2.5" fill="#2d3436"/><circle cx="50" cy="70" r="2.5" fill="#2d3436"/>
+                <circle cx="30" cy="50" r="2.5" fill="#2d3436"/><circle cx="70" cy="50" r="2.5" fill="#2d3436"/>
+                <circle cx="35" cy="35" r="2.5" fill="#2d3436"/><circle cx="65" cy="65" r="2.5" fill="#2d3436"/>
+                <circle cx="65" cy="35" r="2.5" fill="#2d3436"/><circle cx="35" cy="65" r="2.5" fill="#2d3436"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#558b2f">5</text>
+            </svg>
+            <p>5. Kiwi</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#e67e22"/>
+                <circle cx="50" cy="50" r="40" fill="#fdf0d5"/>
+                <circle cx="50" cy="50" r="37" fill="#e67e22"/>
+                <line x1="50" y1="13" x2="50" y2="87" stroke="#fdf0d5" stroke-width="3"/>
+                <line x1="13" y1="50" x2="87" y2="50" stroke="#fdf0d5" stroke-width="3"/>
+                <line x1="24" y1="24" x2="76" y2="76" stroke="#fdf0d5" stroke-width="3"/>
+                <line x1="24" y1="76" x2="76" y2="24" stroke="#fdf0d5" stroke-width="3"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#d35400">6</text>
+            </svg>
+            <p>6. Orange</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#e74c3c"/>
+                <circle cx="50" cy="50" r="40" fill="#fdf0d5"/>
+                <path d="M 50 35 Q 40 50 50 65 Q 60 50 50 35" fill="#f7e1b5"/>
+                <ellipse cx="45" cy="50" rx="3" ry="7" fill="#4a2311" transform="rotate(15 45 50)"/>
+                <ellipse cx="55" cy="50" rx="3" ry="7" fill="#4a2311" transform="rotate(-15 55 50)"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#c0392b">7</text>
+            </svg>
+            <p>7. Apple</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#ff7675"/>
+                <circle cx="50" cy="50" r="41" fill="#ffeaa7"/>
+                <circle cx="50" cy="50" r="16" fill="#d63031"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#d63031">8</text>
+            </svg>
+            <p>8. Peach</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#5D4037"/>
+                <circle cx="50" cy="50" r="38" fill="#ffffff"/>
+                <circle cx="50" cy="50" r="22" fill="#e0f7fa"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#3e2723">9</text>
+            </svg>
+            <p>9. Coconut</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#2ca181"/>
+                <circle cx="50" cy="50" r="42" fill="#d1ccc0"/>
+                <circle cx="50" cy="50" r="39" fill="#f39c12"/>
+                <circle cx="50" cy="50" r="20" fill="#e1b12c"/>
+                <ellipse cx="43" cy="43" rx="2" ry="4" fill="#f5f6fa" transform="rotate(45 43 43)"/>
+                <ellipse cx="57" cy="43" rx="2" ry="4" fill="#f5f6fa" transform="rotate(-45 57 43)"/>
+                <ellipse cx="50" cy="58" rx="2" ry="4" fill="#f5f6fa" transform="rotate(90 50 58)"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#1b7a61">10</text>
+            </svg>
+            <p>10. Melon</p>
+        </div>
+
+        <div class="fruit-container">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#27ae60"/>
+                <circle cx="50" cy="50" r="40" fill="#ecf0f1"/>
+                <circle cx="50" cy="50" r="36" fill="#ff4757"/>
+                <ellipse cx="50" cy="25" rx="2.5" ry="5" fill="#2f3542"/>
+                <ellipse cx="25" cy="50" rx="2.5" ry="5" fill="#2f3542" transform="rotate(90 25 50)"/>
+                <ellipse cx="75" cy="50" rx="2.5" ry="5" fill="#2f3542" transform="rotate(90 75 50)"/>
+                <ellipse cx="50" cy="75" rx="2.5" ry="5" fill="#2f3542"/>
+                <text x="50" y="50" font-size="45" class="lvl" stroke="#1e8449">11</text>
+            </svg>
+            <p>11. Watermelon</p>
+        </div>
+
+    </div>
+</body>
+</html>

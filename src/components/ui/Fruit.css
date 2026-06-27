@@ -5,8 +5,8 @@
   user-select: none;
 }
 
-.fruit-emoji {
-  line-height: 1;
+.fruit-sprite,
+.fruit-image {
+  display: block;
   filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
-  /* Font size is set inline based on fruit size */
 }

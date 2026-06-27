@@ -1,5 +1,6 @@
 import React from 'react';
 import { type FruitType } from '../../constants/gameConstants';
+import FruitSprite from './FruitSprite';
 import './Fruit.css';
 
 interface FruitProps {
@@ -25,10 +26,13 @@ function Fruit({ fruit, x, y, angle, size }: FruitProps) {
   };
 
   return (
-    <div className={`fruit fruit-${fruit.id}`} style={style}>
-      <span className="fruit-emoji" style={{ fontSize: `${displaySize * 0.8}px` }}>
-        {fruit.emoji}
-      </span>
+    <div
+      className={`fruit fruit-${fruit.id}`}
+      style={style}
+      data-fruit-id={fruit.id}
+      data-fruit-name={fruit.name}
+    >
+      <FruitSprite fruit={fruit} size={displaySize} />
     </div>
   );
 }

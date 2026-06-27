@@ -14,14 +14,16 @@ test.describe('UI Interactions', () => {
     await expect(page.locator('.game-info')).toBeVisible();
   });
 
-  test('should display fruit emojis correctly', async ({ page }) => {
-    // Next fruit should have an emoji
-    const nextFruitEmoji = await page.locator('.next-fruit .fruit-emoji');
-    await expect(nextFruitEmoji).toBeVisible();
+  test('should display fruit sprites correctly', async ({ page }) => {
+    const nextFruit = page.locator('.next-fruit .fruit');
+    await expect(nextFruit).toBeVisible();
 
-    const emojiText = await nextFruitEmoji.textContent();
-    // Should be a fruit emoji (non-empty)
-    expect(emojiText?.trim().length).toBeGreaterThan(0);
+    const fruitId = await nextFruit.getAttribute('data-fruit-id');
+    expect(fruitId).toBeTruthy();
+    expect(Number(fruitId)).toBeGreaterThanOrEqual(1);
+    expect(Number(fruitId)).toBeLessThanOrEqual(5);
+
+    await expect(nextFruit.locator('.fruit-sprite')).toBeVisible();
   });
 
   test('should show game over line with correct styling', async ({ page }) => {

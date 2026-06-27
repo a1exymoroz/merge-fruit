@@ -1,23 +1,24 @@
 export interface FruitType {
   id: number;
   name: string;
-  emoji: string;
   points: number;
   radius: number;
+  /** Optional custom asset path, e.g. '/fruits/cherry.svg' */
+  image?: string;
 }
 
 export const FRUIT_TYPES: FruitType[] = [
-  { id: 1, name: 'Cherry', emoji: '🍒', points: 10, radius: 12 }, // Smallest
-  { id: 2, name: 'Strawberry', emoji: '🍓', points: 20, radius: 16 },
-  { id: 3, name: 'Grape', emoji: '🍇', points: 50, radius: 20 },
-  { id: 4, name: 'Dekopon', emoji: '🍊', points: 100, radius: 26 },
-  { id: 5, name: 'Persimmon', emoji: '🍅', points: 200, radius: 32 },
-  { id: 6, name: 'Apple', emoji: '🍎', points: 500, radius: 40 },
-  { id: 7, name: 'Pear', emoji: '🍐', points: 1000, radius: 48 },
-  { id: 8, name: 'Pineapple', emoji: '🍍', points: 2000, radius: 58 },
-  { id: 9, name: 'Melon', emoji: '🍈', points: 5000, radius: 70 },
-  { id: 10, name: 'Coconut', emoji: '🥥', points: 10000, radius: 84 },
-  { id: 11, name: 'Watermelon', emoji: '🍉', points: 20000, radius: 100 }, // Largest
+  { id: 1, name: 'Blueberry', points: 10, radius: 12 }, // Smallest
+  { id: 2, name: 'Cherry', points: 20, radius: 16 },
+  { id: 3, name: 'Plum', points: 50, radius: 20 },
+  { id: 4, name: 'Lemon', points: 100, radius: 26 },
+  { id: 5, name: 'Kiwi', points: 200, radius: 32 },
+  { id: 6, name: 'Orange', points: 500, radius: 40 },
+  { id: 7, name: 'Apple', points: 1000, radius: 48 },
+  { id: 8, name: 'Peach', points: 2000, radius: 58 },
+  { id: 9, name: 'Coconut', points: 5000, radius: 70 },
+  { id: 10, name: 'Melon', points: 10000, radius: 84 },
+  { id: 11, name: 'Watermelon', points: 20000, radius: 100 }, // Largest
 ];
 
 export const CONTAINER_WIDTH = 400;
