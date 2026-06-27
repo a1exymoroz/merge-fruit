@@ -64,19 +64,6 @@ function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      onDrop(dropPosition);
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      setDropPosition((prev) => Math.max(nextFruit?.radius || 0, prev - 10));
-    } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      setDropPosition((prev) => Math.min(CONTAINER_WIDTH - (nextFruit?.radius || 0), prev + 10));
-    }
-  };
-
   useEffect(() => {
     const handleGlobalKeyPress = (e: KeyboardEvent) => {
       if (e.key === ' ' || e.key === 'Enter') {
@@ -107,8 +94,6 @@ function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
       onTouchMove={handleTouchMove}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onKeyDown={handleKeyPress}
-      tabIndex={0}
     >
       <div className="drop-indicator">
         <div className="drop-instructions">

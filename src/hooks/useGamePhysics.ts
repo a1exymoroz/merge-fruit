@@ -227,7 +227,6 @@ export function useGamePhysics({
 
       if (fruitAboveLine && !gameOverRef.current) {
         if (!gameOverTimerRef.current) {
-          console.log('setting game over timer');
           const timer = setTimeout(() => {
             setGameOver(true);
             Matter.Runner.stop(runner);
@@ -235,7 +234,6 @@ export function useGamePhysics({
           setGameOverTimer(timer);
         }
       } else if (!fruitAboveLine && gameOverTimerRef.current) {
-        console.log('clearing game over timer');
         clearTimeout(gameOverTimerRef.current);
         setGameOverTimer(null);
       }
