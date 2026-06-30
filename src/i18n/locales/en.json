@@ -8,8 +8,8 @@
     "password": "Password",
     "emailPlaceholder": "you@example.com",
     "passwordPlaceholder": "At least 8 characters",
-    "coldStartNotice": "The backend runs on Render's free tier. After inactivity, the first request may take up to ~50 seconds while the server starts. The next requests will be much faster.",
-    "coldStartWaiting": "Waking up the server… This may take up to ~50 seconds. Please wait."
+    "coldStartNotice": "The backend runs on Render's free tier and may sleep after inactivity. We wake it up automatically when you open the app — that can take up to ~50 seconds. Once it's ready, requests are much faster.",
+    "coldStartWaiting": "Connecting to the server… This may take up to ~50 seconds while it starts. We'll keep trying automatically — please wait."
   },
   "language": {
     "label": "Language",
