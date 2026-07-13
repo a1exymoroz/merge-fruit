@@ -4,10 +4,6 @@
     "appTitleGame": "🍎 Fruit Merge 🍎",
     "pageTitle": "🍎 Fruit Merge 🍎",
     "loading": "Loading...",
-    "email": "Email",
-    "password": "Password",
-    "emailPlaceholder": "you@example.com",
-    "passwordPlaceholder": "At least 8 characters",
     "coldStartNotice": "The backend runs on Render's free tier and may sleep after inactivity. We wake it up automatically when you open the app — that can take up to ~50 seconds. Once it's ready, requests are much faster.",
     "coldStartWaiting": "Connecting to the server… This may take up to ~50 seconds while it starts. We'll keep trying automatically — please wait."
   },
@@ -18,29 +14,6 @@
     "ru": "Русский"
   },
   "auth": {
-    "signInToPlay": "Sign in to play",
-    "signIn": "Sign In",
-    "signingIn": "Signing in...",
-    "noAccount": "Don't have an account? <signupLink>Sign up</signupLink>",
-    "createAccount": "Create your account",
-    "displayName": "Display name",
-    "displayNamePlaceholder": "Your leaderboard name",
-    "signUp": "Sign Up",
-    "creatingAccount": "Creating account...",
-    "hasAccount": "Already have an account? <loginLink>Sign in</loginLink>",
-    "verifyEmail": "Verify your email",
-    "emailVerified": "Email verified!",
-    "emailVerifiedMessage": "Your email has been verified.",
-    "continueToGame": "Continue to Game",
-    "openVerificationLink": "Open the verification link from your email to continue.",
-    "enterCode": "Enter the 4-digit code from your email.",
-    "digitLabel": "Digit {{number}}",
-    "verifying": "Verifying...",
-    "verifyEmailButton": "Verify Email",
-    "backToSignIn": "Back to sign in",
-    "checkEmailMessage": "Please check your email for the verification link, then enter your 4-digit code.",
-    "verifyBanner": "Please verify your email to secure your account.",
-    "verify": "Verify",
     "hi": "Hi, {{name}}",
     "logOut": "Log out"
   },
@@ -79,11 +52,6 @@
     "empty": "No scores yet. Be the first!"
   },
   "errors": {
-    "loginFailed": "Login failed",
-    "signUpFailed": "Sign up failed",
-    "verificationFailed": "Verification failed",
-    "authenticationFailed": "Authentication failed",
-    "emailVerificationFailed": "Email verification failed",
     "failedToSubmitScore": "Failed to submit score",
     "failedToFetchLeaderboard": "Failed to fetch leaderboard",
     "failedToLoadScores": "Failed to load scores",
@@ -108,30 +76,29 @@
     "flow": {
       "authRequest": {
         "title": "Typical authenticated request",
-        "step1": "JWT filter validates Bearer token",
+        "step1": "Resource server validates Bearer token against Keycloak's JWKS",
         "step2": "Controller handles REST endpoint",
         "step3": "Service runs business logic",
         "step4": "PostgreSQL via JPA / Hibernate"
       },
       "signup": {
-        "title": "Signup",
-        "step1": "Validate input (Jakarta Validation)",
-        "step2": "Hash password with BCrypt",
-        "step3": "Save user in PostgreSQL",
-        "step4": "Send verification email (Brevo)",
-        "step5": "Return JWT to client"
+        "title": "Login (Keycloak redirect)",
+        "step1": "App redirects to Keycloak's hosted login page",
+        "step2": "User authenticates with Keycloak (PKCE)",
+        "step3": "Keycloak redirects back with an authorization code",
+        "step4": "keycloak-js exchanges the code for tokens"
       },
       "login": {
-        "title": "Login",
-        "step1": "AuthenticationManager",
-        "step2": "DaoAuthenticationProvider (BCrypt check)",
-        "step3": "Issue JWT"
+        "title": "Session refresh",
+        "step1": "keycloak.updateToken(30) checks expiry before each request",
+        "step2": "Refresh token silently exchanged for a new access token",
+        "step3": "New access token attached as the Authorization header"
       },
       "protected": {
         "title": "Protected requests",
         "step1": "Client sends Authorization: Bearer <JWT>",
-        "step2": "No password on subsequent requests",
-        "step3": "JWT filter authorizes access"
+        "step2": "No credentials re-sent on subsequent requests",
+        "step3": "Resource server authorizes access from token claims"
       }
     }
   }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../auth/AuthProvider';
 import { submitScore } from '../../services/leaderboardApi';
 import { translateError } from '../../i18n/translateError';
 import { selectLeaderboardEntries, updateEntries, useAppDispatch, useAppSelector } from '../../store';

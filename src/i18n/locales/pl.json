@@ -4,10 +4,6 @@
     "appTitleGame": "🍎 Fruit Merge 🍎",
     "pageTitle": "🍎 Fruit Merge 🍎",
     "loading": "Ładowanie...",
-    "email": "E-mail",
-    "password": "Hasło",
-    "emailPlaceholder": "ty@example.com",
-    "passwordPlaceholder": "Co najmniej 8 znaków",
     "coldStartNotice": "Backend działa na darmowym planie Render i może usypiać po bezczynności. Budzimy go automatycznie po otwarciu aplikacji — to może potrwać do ~50 sekund. Gdy serwer będzie gotowy, kolejne żądania będą znacznie szybsze.",
     "coldStartWaiting": "Łączenie z serwerem… Uruchomienie może potrwać do ~50 sekund. Będziemy próbować ponownie automatycznie — proszę czekać."
   },
@@ -18,29 +14,6 @@
     "ru": "Русский"
   },
   "auth": {
-    "signInToPlay": "Zaloguj się, aby grać",
-    "signIn": "Zaloguj się",
-    "signingIn": "Logowanie...",
-    "noAccount": "Nie masz konta? <signupLink>Zarejestruj się</signupLink>",
-    "createAccount": "Utwórz konto",
-    "displayName": "Nazwa wyświetlana",
-    "displayNamePlaceholder": "Twoja nazwa w rankingu",
-    "signUp": "Zarejestruj się",
-    "creatingAccount": "Tworzenie konta...",
-    "hasAccount": "Masz już konto? <loginLink>Zaloguj się</loginLink>",
-    "verifyEmail": "Zweryfikuj swój e-mail",
-    "emailVerified": "E-mail zweryfikowany!",
-    "emailVerifiedMessage": "Twój e-mail został zweryfikowany.",
-    "continueToGame": "Przejdź do gry",
-    "openVerificationLink": "Otwórz link weryfikacyjny z e-maila, aby kontynuować.",
-    "enterCode": "Wpisz 4-cyfrowy kod z e-maila.",
-    "digitLabel": "Cyfra {{number}}",
-    "verifying": "Weryfikacja...",
-    "verifyEmailButton": "Zweryfikuj e-mail",
-    "backToSignIn": "Wróć do logowania",
-    "checkEmailMessage": "Sprawdź e-mail z linkiem weryfikacyjnym, a następnie wpisz 4-cyfrowy kod.",
-    "verifyBanner": "Zweryfikuj swój e-mail, aby zabezpieczyć konto.",
-    "verify": "Zweryfikuj",
     "hi": "Cześć, {{name}}",
     "logOut": "Wyloguj się"
   },
@@ -79,11 +52,6 @@
     "empty": "Brak wyników. Bądź pierwszy!"
   },
   "errors": {
-    "loginFailed": "Logowanie nie powiodło się",
-    "signUpFailed": "Rejestracja nie powiodła się",
-    "verificationFailed": "Weryfikacja nie powiodła się",
-    "authenticationFailed": "Uwierzytelnianie nie powiodło się",
-    "emailVerificationFailed": "Weryfikacja e-maila nie powiodła się",
     "failedToSubmitScore": "Nie udało się zapisać wyniku",
     "failedToFetchLeaderboard": "Nie udało się pobrać rankingu",
     "failedToLoadScores": "Nie udało się załadować wyników",
@@ -108,30 +76,29 @@
     "flow": {
       "authRequest": {
         "title": "Typowe uwierzytelnione żądanie",
-        "step1": "Filtr JWT weryfikuje token Bearer",
+        "step1": "Serwer zasobów weryfikuje token Bearer względem JWKS Keycloak",
         "step2": "Kontroler obsługuje endpoint REST",
         "step3": "Serwis wykonuje logikę biznesową",
         "step4": "PostgreSQL przez JPA / Hibernate"
       },
       "signup": {
-        "title": "Rejestracja",
-        "step1": "Walidacja danych (Jakarta Validation)",
-        "step2": "Hashowanie hasła przez BCrypt",
-        "step3": "Zapis użytkownika w PostgreSQL",
-        "step4": "Wysłanie e-maila weryfikacyjnego (Brevo)",
-        "step5": "Zwrócenie JWT do klienta"
+        "title": "Logowanie (przekierowanie do Keycloak)",
+        "step1": "Aplikacja przekierowuje do strony logowania Keycloak",
+        "step2": "Użytkownik loguje się w Keycloak (PKCE)",
+        "step3": "Keycloak przekierowuje z powrotem z kodem autoryzacji",
+        "step4": "keycloak-js wymienia kod na tokeny"
       },
       "login": {
-        "title": "Logowanie",
-        "step1": "AuthenticationManager",
-        "step2": "DaoAuthenticationProvider (weryfikacja BCrypt)",
-        "step3": "Wydanie JWT"
+        "title": "Odświeżanie sesji",
+        "step1": "keycloak.updateToken(30) sprawdza ważność przed każdym żądaniem",
+        "step2": "Token odświeżający jest cicho wymieniany na nowy token dostępu",
+        "step3": "Nowy token dostępu dołączany jako nagłówek Authorization"
       },
       "protected": {
         "title": "Chronione żądania",
         "step1": "Klient wysyła Authorization: Bearer <JWT>",
-        "step2": "Brak hasła w kolejnych żądaniach",
-        "step3": "Filtr JWT autoryzuje dostęp"
+        "step2": "Brak ponownego przesyłania danych logowania",
+        "step3": "Serwer zasobów autoryzuje dostęp na podstawie tokenu"
       }
     }
   }

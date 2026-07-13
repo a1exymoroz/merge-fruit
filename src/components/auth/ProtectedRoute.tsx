@@ -1,29 +1,16 @@
-import { Navigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext';
-import { getVerifyEmailPath } from '../../utils/verifyEmailPath';
+import { useAuth } from '../../auth/AuthProvider';
+import { keycloak } from '../../auth/keycloak';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { t } = useTranslation();
-  const { user, isAuthenticated, isEmailVerified, isLoading } = useAuth();
+  const { authenticated } = useAuth();
 
-  if (isLoading) {
-    return <div className="auth-loading">{t('common.loading')}</div>;
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (!isEmailVerified) {
-    if (user?.verificationToken) {
-      return <Navigate to={getVerifyEmailPath(user.verificationToken)} replace />;
-    }
-    return <Navigate to="/login" replace />;
+  if (!authenticated) {
+    keycloak.login();
+    return null;
   }
 
   return <>{children}</>;

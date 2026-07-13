@@ -4,10 +4,6 @@
     "appTitleGame": "🍎 Fruit Merge 🍎",
     "pageTitle": "🍎 Fruit Merge 🍎",
     "loading": "Загрузка...",
-    "email": "Эл. почта",
-    "password": "Пароль",
-    "emailPlaceholder": "you@example.com",
-    "passwordPlaceholder": "Не менее 8 символов",
     "coldStartNotice": "Бэкенд работает на бесплатном тарифе Render и может «засыпать» после простоя. Мы автоматически будим его при открытии приложения — это может занять до ~50 секунд. Когда сервер готов, запросы выполняются намного быстрее.",
     "coldStartWaiting": "Подключение к серверу… Запуск может занять до ~50 секунд. Мы будем повторять попытки автоматически — пожалуйста, подождите."
   },
@@ -18,29 +14,6 @@
     "ru": "Русский"
   },
   "auth": {
-    "signInToPlay": "Войдите, чтобы играть",
-    "signIn": "Войти",
-    "signingIn": "Вход...",
-    "noAccount": "Нет аккаунта? <signupLink>Зарегистрироваться</signupLink>",
-    "createAccount": "Создайте аккаунт",
-    "displayName": "Отображаемое имя",
-    "displayNamePlaceholder": "Ваше имя в таблице лидеров",
-    "signUp": "Регистрация",
-    "creatingAccount": "Создание аккаунта...",
-    "hasAccount": "Уже есть аккаунт? <loginLink>Войти</loginLink>",
-    "verifyEmail": "Подтвердите эл. почту",
-    "emailVerified": "Эл. почта подтверждена!",
-    "emailVerifiedMessage": "Ваша эл. почта была подтверждена.",
-    "continueToGame": "Перейти к игре",
-    "openVerificationLink": "Откройте ссылку для подтверждения из письма, чтобы продолжить.",
-    "enterCode": "Введите 4-значный код из письма.",
-    "digitLabel": "Цифра {{number}}",
-    "verifying": "Проверка...",
-    "verifyEmailButton": "Подтвердить эл. почту",
-    "backToSignIn": "Вернуться ко входу",
-    "checkEmailMessage": "Проверьте письмо со ссылкой для подтверждения, затем введите 4-значный код.",
-    "verifyBanner": "Подтвердите эл. почту, чтобы защитить аккаунт.",
-    "verify": "Подтвердить",
     "hi": "Привет, {{name}}",
     "logOut": "Выйти"
   },
@@ -79,11 +52,6 @@
     "empty": "Пока нет результатов. Будьте первым!"
   },
   "errors": {
-    "loginFailed": "Не удалось войти",
-    "signUpFailed": "Не удалось зарегистрироваться",
-    "verificationFailed": "Не удалось подтвердить",
-    "authenticationFailed": "Ошибка аутентификации",
-    "emailVerificationFailed": "Не удалось подтвердить эл. почту",
     "failedToSubmitScore": "Не удалось сохранить счёт",
     "failedToFetchLeaderboard": "Не удалось загрузить таблицу лидеров",
     "failedToLoadScores": "Не удалось загрузить результаты",
@@ -108,30 +76,29 @@
     "flow": {
       "authRequest": {
         "title": "Типичный аутентифицированный запрос",
-        "step1": "JWT-фильтр проверяет Bearer-токен",
+        "step1": "Resource server проверяет Bearer-токен по JWKS Keycloak",
         "step2": "Контроллер обрабатывает REST endpoint",
         "step3": "Сервис выполняет бизнес-логику",
         "step4": "PostgreSQL через JPA / Hibernate"
       },
       "signup": {
-        "title": "Регистрация",
-        "step1": "Валидация данных (Jakarta Validation)",
-        "step2": "Хеширование пароля через BCrypt",
-        "step3": "Сохранение пользователя в PostgreSQL",
-        "step4": "Отправка письма для верификации (Brevo)",
-        "step5": "Возврат JWT клиенту"
+        "title": "Вход (редирект в Keycloak)",
+        "step1": "Приложение перенаправляет на страницу входа Keycloak",
+        "step2": "Пользователь входит через Keycloak (PKCE)",
+        "step3": "Keycloak перенаправляет обратно с кодом авторизации",
+        "step4": "keycloak-js обменивает код на токены"
       },
       "login": {
-        "title": "Вход",
-        "step1": "AuthenticationManager",
-        "step2": "DaoAuthenticationProvider (проверка BCrypt)",
-        "step3": "Выдача JWT"
+        "title": "Обновление сессии",
+        "step1": "keycloak.updateToken(30) проверяет срок действия перед запросом",
+        "step2": "Refresh-токен незаметно обменивается на новый access-токен",
+        "step3": "Новый access-токен добавляется в заголовок Authorization"
       },
       "protected": {
         "title": "Защищённые запросы",
         "step1": "Клиент отправляет Authorization: Bearer <JWT>",
-        "step2": "Пароль не передаётся в последующих запросах",
-        "step3": "JWT-фильтр авторизует доступ"
+        "step2": "Учётные данные повторно не передаются",
+        "step3": "Resource server авторизует доступ по токену"
       }
     }
   }
