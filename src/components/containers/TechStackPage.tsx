@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import './TechStackPage.css';
 
@@ -24,7 +23,7 @@ const FRONTEND_STACK: StackRow[] = [
   { layer: 'Physics', tech: 'Matter.js' },
   { layer: 'i18n', tech: 'i18next, react-i18next (EN, PL, RU)' },
   { layer: 'Styling', tech: 'Plain CSS' },
-  { layer: 'Auth (client)', tech: 'React Context, localStorage JWT' },
+  { layer: 'Auth (client)', tech: 'Keycloak (OIDC), keycloak-js' },
   { layer: 'API', tech: 'Native fetch' },
   { layer: 'Testing', tech: 'Playwright' },
   { layer: 'Deploy', tech: 'Netlify' },
@@ -33,7 +32,7 @@ const FRONTEND_STACK: StackRow[] = [
 const BACKEND_STACK: StackRow[] = [
   { layer: 'Runtime', tech: 'Java 21, Maven, Spring Boot 3.4.5' },
   { layer: 'API', tech: 'Spring Web (REST/JSON), Jakarta Validation' },
-  { layer: 'Security', tech: 'Spring Security 6, BCrypt, JWT (JJWT 0.12.6 / HS256)' },
+  { layer: 'Security', tech: 'Spring Security 6, OAuth2 Resource Server (Keycloak-issued JWT)' },
   { layer: 'Data', tech: 'PostgreSQL, Spring Data JPA, Hibernate, HikariCP, Flyway' },
   { layer: 'Email', tech: 'Brevo REST API via RestClient' },
   { layer: 'Ops', tech: 'Spring Actuator, Docker (local), Render + Neon (prod)' },
@@ -95,14 +94,12 @@ function FlowDiagram({ title, steps }: FlowDiagramProps) {
 
 function TechStackPage() {
   const { t } = useTranslation();
-  const { isAuthenticated } = useAuth();
-  const backPath = isAuthenticated ? '/' : '/login';
 
   return (
     <div className="tech-stack-page">
       <header className="tech-stack-header">
         <div className="tech-stack-header-top">
-          <Link to={backPath} className="tech-stack-back">
+          <Link to="/" className="tech-stack-back">
             {t('stack.back')}
           </Link>
           <LanguageSwitcher theme="dark" />
@@ -169,7 +166,6 @@ function TechStackPage() {
               t('stack.flow.signup.step2'),
               t('stack.flow.signup.step3'),
               t('stack.flow.signup.step4'),
-              t('stack.flow.signup.step5'),
             ]}
           />
           <FlowDiagram

@@ -1,5 +1,5 @@
 import { SCORES_API_URL } from '../config/api';
-import { getAuthHeaders } from '../utils/authStorage';
+import { getAuthHeader } from '../auth/keycloak';
 
 export interface LeaderboardEntry {
   id?: number;
@@ -31,7 +31,7 @@ export function getHighScoreFromEntries(entries: LeaderboardEntry[]): number {
 
 export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
   const response = await fetch(SCORES_API_URL, {
-    headers: getAuthHeaders(),
+    headers: await getAuthHeader(),
   });
 
   if (response.status === 401) {
@@ -51,7 +51,7 @@ export async function submitScore(score: number): Promise<SubmitScoreResponse> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...getAuthHeaders(),
+      ...(await getAuthHeader()),
     },
     body: JSON.stringify({ score }),
   });

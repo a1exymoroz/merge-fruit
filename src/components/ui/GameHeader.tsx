@@ -1,9 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../auth/AuthProvider';
 import LanguageSwitcher from './LanguageSwitcher';
 import './GameHeader.css';
-import '../containers/VerifyEmailPage.css';
 
 interface GameHeaderProps {
   score: number;
@@ -12,13 +10,7 @@ interface GameHeaderProps {
 
 function GameHeader({ score, highScore }: GameHeaderProps) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
-  };
 
   const userInitial = user?.displayName?.charAt(0).toUpperCase() ?? '?';
 
@@ -33,18 +25,11 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
         </div>
         <div className="game-header-actions">
           <LanguageSwitcher />
-          <button type="button" className="logout-btn" onClick={handleLogout}>
+          <button type="button" className="logout-btn" onClick={logout}>
             {t('auth.logOut')}
           </button>
         </div>
       </div>
-
-      {!user?.emailVerified && user?.verificationToken && (
-        <div className="verify-banner">
-          <span>{t('auth.verifyBanner')}</span>
-          <Link to={`/verify?token=${user.verificationToken}`}>{t('auth.verify')}</Link>
-        </div>
-      )}
 
       <h1>{t('common.appTitleGame')}</h1>
       <div className="scores">
