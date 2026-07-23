@@ -95,8 +95,8 @@ function FlowDiagram({ title, steps }: FlowDiagramProps) {
 
 function TechStackPage() {
   const { t } = useTranslation();
-  const { isAuthenticated } = useAuth();
-  const backPath = isAuthenticated ? '/' : '/login';
+  const { isAuthenticated, isGuest } = useAuth();
+  const backPath = isAuthenticated || isGuest ? '/' : '/login';
 
   return (
     <div className="tech-stack-page">

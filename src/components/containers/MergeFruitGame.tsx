@@ -8,6 +8,7 @@ import {
   Instructions,
   Leaderboard,
 } from '../ui';
+import { useAuth } from '../../contexts/AuthContext';
 import { useGamePhysics, type FruitRenderData } from '../../hooks/useGamePhysics';
 import { generateNextFruit } from '../../utils/fruitUtils';
 import { type FruitType, CONTAINER_WIDTH, DROP_Y } from '../../constants/gameConstants';
@@ -16,6 +17,7 @@ import './MergeFruitGame.css';
 
 function MergeFruitGame() {
   const dispatch = useAppDispatch();
+  const { isGuest } = useAuth();
   const highScore = useAppSelector(selectHighScore);
 
   const fruitsRef = useRef<Map<Matter.Body, { fruitType: FruitType; uniqueId: number }>>(new Map());
@@ -29,8 +31,10 @@ function MergeFruitGame() {
   const runnerRef = useRef<Matter.Runner | null>(null);
 
   useEffect(() => {
-    dispatch(fetchScores());
-  }, [dispatch]);
+    if (!isGuest) {
+      dispatch(fetchScores());
+    }
+  }, [dispatch, isGuest]);
 
   const createFruit = (fruitType: FruitType, x: number, y: number) => {
     if (!engineRef.current) return;
@@ -104,7 +108,7 @@ function MergeFruitGame() {
       <GameInfo nextFruit={nextFruit} onReset={resetGame} />
       {gameOver && <GameOverOverlay score={score} highScore={highScore} onPlayAgain={resetGame} />}
       <Instructions />
-      <Leaderboard />
+      {!isGuest && <Leaderboard />}
     </div>
   );
 }

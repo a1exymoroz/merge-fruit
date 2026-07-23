@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { submitScore } from '../../services/leaderboardApi';
@@ -14,8 +15,9 @@ interface GameOverOverlayProps {
 
 function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
   const leaderboard = useAppSelector(selectLeaderboardEntries);
   const isNewHighScore = score > highScore && score > 0;
   const [submitted, setSubmitted] = useState(false);
@@ -56,7 +58,14 @@ function GameOverOverlay({ score, highScore, onPlayAgain }: GameOverOverlayProps
         </p>
         {isNewHighScore && <p className="new-high-score">{t('game.newHighScore')}</p>}
 
-        {!submitted ? (
+        {isGuest ? (
+          <div className="submit-score-form">
+            <p>{t('game.logInToSavePrompt')}</p>
+            <button type="button" onClick={() => navigate('/login')}>
+              {t('auth.logIn')}
+            </button>
+          </div>
+        ) : !submitted ? (
           <div className="submit-score-form">
             <p>{t('game.saveScorePrompt', { name: user?.displayName })}</p>
             <button type="button" onClick={handleSubmit} disabled={submitting || score <= 0}>

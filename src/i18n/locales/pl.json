@@ -42,7 +42,13 @@
     "verifyBanner": "Zweryfikuj swój e-mail, aby zabezpieczyć konto.",
     "verify": "Zweryfikuj",
     "hi": "Cześć, {{name}}",
-    "logOut": "Wyloguj się"
+    "logOut": "Wyloguj się",
+    "logIn": "Zaloguj się",
+    "or": "lub",
+    "guestGreeting": "Grasz jako gość",
+    "welcomeSubtitle": "Zaloguj się, aby zapisywać wyniki w rankingu, albo przejdź od razu do gry jako gość.",
+    "continueAsGuest": "Graj jako gość",
+    "guestNote": "Jako gość Twoje wyniki nie będą zapisywane w rankingu."
   },
   "game": {
     "score": "Wynik: {{score}}",
@@ -56,6 +62,7 @@
     "finalScore": "Końcowy wynik: <strong>{{score}}</strong>",
     "newHighScore": "🎉 Nowy rekord! 🎉",
     "saveScorePrompt": "Zapisać wynik jako {{name}}?",
+    "logInToSavePrompt": "Zaloguj się, aby zapisać wynik w rankingu.",
     "saving": "Zapisywanie...",
     "saveScore": "Zapisz wynik",
     "ranked": "🏆 Zająłeś/aś {{rank}}. miejsce!",

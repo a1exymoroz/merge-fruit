@@ -13,14 +13,14 @@ interface GameHeaderProps {
 function GameHeader({ score, highScore }: GameHeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, isGuest, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
     navigate('/login', { replace: true });
   };
 
-  const userInitial = user?.displayName?.charAt(0).toUpperCase() ?? '?';
+  const userInitial = isGuest ? '?' : (user?.displayName?.charAt(0).toUpperCase() ?? '?');
 
   return (
     <div className="game-header">
@@ -29,13 +29,21 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
           <span className="user-avatar" aria-hidden="true">
             {userInitial}
           </span>
-          <span className="user-greeting">{t('auth.hi', { name: user?.displayName })}</span>
+          <span className="user-greeting">
+            {isGuest ? t('auth.guestGreeting') : t('auth.hi', { name: user?.displayName })}
+          </span>
         </div>
         <div className="game-header-actions">
           <LanguageSwitcher />
-          <button type="button" className="logout-btn" onClick={handleLogout}>
-            {t('auth.logOut')}
-          </button>
+          {isGuest ? (
+            <button type="button" className="logout-btn" onClick={() => navigate('/login')}>
+              {t('auth.logIn')}
+            </button>
+          ) : (
+            <button type="button" className="logout-btn" onClick={handleLogout}>
+              {t('auth.logOut')}
+            </button>
+          )}
         </div>
       </div>
 

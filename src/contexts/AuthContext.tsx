@@ -19,12 +19,16 @@ interface AuthContextValue {
   user: StoredAuth | null;
   isAuthenticated: boolean;
   isEmailVerified: boolean;
+  isGuest: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<StoredAuth>;
   signUp: (email: string, password: string, displayName: string) => Promise<StoredAuth>;
   markEmailVerified: () => void;
+  continueAsGuest: () => void;
   logout: () => void;
 }
+
+const GUEST_STORAGE_KEY = 'mergeFruitGuest';
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -54,6 +58,7 @@ function persistAuthResponse(response: {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<StoredAuth | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [guest, setGuest] = useState(() => sessionStorage.getItem(GUEST_STORAGE_KEY) === 'true');
 
   useEffect(() => {
     setUser(getStoredAuth());
@@ -90,9 +95,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const continueAsGuest = useCallback(() => {
+    sessionStorage.setItem(GUEST_STORAGE_KEY, 'true');
+    setGuest(true);
+  }, []);
+
   const logout = useCallback(() => {
     clearStoredAuth();
+    sessionStorage.removeItem(GUEST_STORAGE_KEY);
     setUser(null);
+    setGuest(false);
   }, []);
 
   const value = useMemo(
@@ -100,13 +112,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       isAuthenticated: user !== null,
       isEmailVerified: user?.emailVerified ?? false,
+      isGuest: guest && user === null,
       isLoading,
       login,
       signUp,
       markEmailVerified,
+      continueAsGuest,
       logout,
     }),
-    [user, isLoading, login, signUp, markEmailVerified, logout],
+    [user, guest, isLoading, login, signUp, markEmailVerified, continueAsGuest, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

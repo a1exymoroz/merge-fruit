@@ -1,0 +1,57 @@
+.guest-gate-guest-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  color: #1a1a2e;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.guest-gate-guest-btn:hover {
+  transform: translateY(-2px);
+}
+
+.guest-gate-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.guest-gate-divider::before,
+.guest-gate-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.guest-gate-login-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.guest-gate-login-btn:hover {
+  transform: translateY(-2px);
+}
+
+.guest-gate-note {
+  margin-top: 16px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
