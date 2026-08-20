@@ -9,7 +9,7 @@ import {
   Leaderboard,
 } from '../ui';
 import { useAuth } from '../../contexts/AuthContext';
-import { useGamePhysics, type FruitRenderData } from '../../hooks/useGamePhysics';
+import { useGamePhysics, type FruitData, type FruitRenderData } from '../../hooks/useGamePhysics';
 import { generateNextFruit } from '../../utils/fruitUtils';
 import { type FruitType, CONTAINER_WIDTH, DROP_Y } from '../../constants/gameConstants';
 import { fetchScores, useAppDispatch, useAppSelector, selectHighScore } from '../../store';
@@ -20,7 +20,7 @@ function MergeFruitGame() {
   const { isGuest } = useAuth();
   const highScore = useAppSelector(selectHighScore);
 
-  const fruitsRef = useRef<Map<Matter.Body, { fruitType: FruitType; uniqueId: number }>>(new Map());
+  const fruitsRef = useRef<Map<Matter.Body, FruitData>>(new Map());
   const [fruits, setFruits] = useState<FruitRenderData[]>([]);
   const [score, setScore] = useState(0);
   const [nextFruit, setNextFruit] = useState<FruitType | null>(null);
@@ -49,7 +49,8 @@ function MergeFruitGame() {
 
     const uniqueId = Date.now() + Math.random();
     Matter.World.add(engineRef.current.world, body);
-    fruitsRef.current.set(body, { fruitType, uniqueId });
+    // createdAt drives the game-over grace period in useGamePhysics (see GAME_OVER_GRACE_MS).
+    fruitsRef.current.set(body, { fruitType, uniqueId, createdAt: Date.now() });
   };
 
   useGamePhysics({

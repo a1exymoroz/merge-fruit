@@ -20,7 +20,15 @@ import {
 export interface FruitData {
   fruitType: FruitType;
   uniqueId: number;
+  /** Timestamp (Date.now()) when this fruit's body was created; used for the game-over grace period below. */
+  createdAt: number;
 }
+
+// A freshly-spawned body has zero velocity for the first few physics steps,
+// which would otherwise look "settled" before gravity has had a chance to
+// move it away from the (above-the-line) drop point. Give new fruits a
+// grace period before they can trigger game over.
+const GAME_OVER_GRACE_MS = 500;
 
 export interface FruitRenderData {
   body: Matter.Body;
@@ -215,8 +223,13 @@ export function useGamePhysics({
         const fruitTop = fruitCenterY - data.fruitType.radius;
         const velocity = body.velocity || { x: 0, y: 0 };
         const isSettled = Math.abs(velocity.y) < 2;
+        // Without this, a fruit dropped moments ago (still at DROP_Y, above
+        // GAME_OVER_LINE_Y, velocity not yet built up by gravity) reads as
+        // "settled above the line" and can arm/false-trigger game over
+        // before it has even started falling.
+        const isPastGracePeriod = Date.now() - data.createdAt > GAME_OVER_GRACE_MS;
 
-        if (fruitTop < GAME_OVER_LINE_Y && isSettled) {
+        if (fruitTop < GAME_OVER_LINE_Y && isSettled && isPastGracePeriod) {
           fruitAboveLine = true;
         }
       });
