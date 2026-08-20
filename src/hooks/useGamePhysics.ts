@@ -13,7 +13,6 @@ import {
   CONTAINER_HEIGHT,
   CONTAINER_THICKNESS,
   GAME_OVER_LINE_Y,
-  UPDATE_INTERVAL,
   GAME_OVER_DELAY,
   type FruitType,
 } from '../constants/gameConstants';
@@ -75,6 +74,7 @@ export function useGamePhysics({
   useEffect(() => {
     // Initialize physics engine
     const engine = Matter.Engine.create();
+    engine.enableSleeping = true;
     if (engine.world.gravity) {
       engine.world.gravity.y = 0.8;
       engine.world.gravity.x = 0; // No horizontal gravity
@@ -196,25 +196,21 @@ export function useGamePhysics({
     const updatePositions = () => {
       if (gameOverRef.current) return;
 
-      const entries: Array<[Matter.Body, FruitData]> = fruitsRef.current
-        ? Array.from(fruitsRef.current.entries())
-        : [];
-      const fruitArray: FruitRenderData[] = entries.map(([body, data]) => ({
-        body,
-        fruitType: data.fruitType,
-        uniqueId: data.uniqueId,
-        x: body.position.x,
-        y: body.position.y,
-        angle: body.angle,
-      }));
-
-      setFruits(fruitArray);
-
-      // Check for game over
+      const fruitArray: FruitRenderData[] = [];
       // A fruit is considered "above the line" if its top edge is above GAME_OVER_LINE_Y
       // We also check that the fruit has settled (low velocity) to avoid false positives during drop
       let fruitAboveLine = false;
+
       fruitsRef.current?.forEach((data: FruitData, body: Matter.Body) => {
+        fruitArray.push({
+          body,
+          fruitType: data.fruitType,
+          uniqueId: data.uniqueId,
+          x: body.position.x,
+          y: body.position.y,
+          angle: body.angle,
+        });
+
         const fruitCenterY = body.position.y;
         const fruitTop = fruitCenterY - data.fruitType.radius;
         const velocity = body.velocity || { x: 0, y: 0 };
@@ -224,6 +220,8 @@ export function useGamePhysics({
           fruitAboveLine = true;
         }
       });
+
+      setFruits(fruitArray);
 
       if (fruitAboveLine && !gameOverRef.current) {
         if (!gameOverTimerRef.current) {
@@ -239,10 +237,15 @@ export function useGamePhysics({
       }
     };
 
-    const interval = setInterval(updatePositions, UPDATE_INTERVAL);
+    let rafId = 0;
+    const tick = () => {
+      updatePositions();
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
 
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(rafId);
       if (gameOverTimerRef.current) clearTimeout(gameOverTimerRef.current);
       if (runnerRef.current) Matter.Runner.stop(runnerRef.current);
       if (engineRef.current) Matter.Engine.clear(engineRef.current);

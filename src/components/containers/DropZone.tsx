@@ -111,4 +111,6 @@ function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
   );
 }
 
-export default DropZone;
+// Memoized so it doesn't re-render on every physics tick (it doesn't depend
+// on fruit positions, only onDrop/nextFruit/height).
+export default React.memo(DropZone);

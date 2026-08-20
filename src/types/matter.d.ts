@@ -18,6 +18,7 @@ declare module 'matter-js' {
 
   export class Engine implements IEngine {
     world: IWorld;
+    enableSleeping: boolean;
     static create(): Engine;
     static clear(engine: Engine): void;
   }

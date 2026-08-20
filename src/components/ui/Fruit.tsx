@@ -37,4 +37,6 @@ function Fruit({ fruit, x, y, angle, size }: FruitProps) {
   );
 }
 
-export default Fruit;
+// Memoized so a fruit that hasn't moved (e.g. asleep in matter-js) skips
+// re-rendering its DOM+SVG tree every physics tick.
+export default React.memo(Fruit);

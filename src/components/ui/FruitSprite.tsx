@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { type FruitType } from '../../constants/gameConstants';
 import { renderFruitArt } from '../../constants/fruitArt';
 
@@ -34,4 +35,4 @@ function FruitSprite({ fruit, size }: FruitSpriteProps) {
   );
 }
 
-export default FruitSprite;
+export default memo(FruitSprite);
