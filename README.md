@@ -1,6 +1,6 @@
-# 🍎 Fruit Merge Game
+# 🍉 Merge Fruit
 
-A physics-based puzzle game built with React and Matter.js! Drop fruits into a container and merge identical fruits to create larger ones. The goal is to reach the Watermelon without letting fruits stack above the Game Over line!
+A physics-based fruit-merging puzzle game (2048-style "Suika Game" clone) built with React, TypeScript, and Matter.js. Drop fruits into a container, merge identical fruits to create bigger ones, and try to reach the Watermelon without stacking over the Game Over line. Play as a guest or sign up to save scores to an online leaderboard.
 
 ## 🎮 How to Play
 
@@ -10,28 +10,45 @@ A physics-based puzzle game built with React and Matter.js! Drop fruits into a c
 4. **Score Points**: Each merge gives you points based on the fruit type (larger fruits = more points)
 5. **Game Over**: The game ends if any fruit stays above the Game Over line for 2 seconds
 
+## 🍓 Fruit Progression
+
+11 fruit types in a clear progression sequence, from Cherry (10 points) up to Watermelon (20,000 points). Initially only the first few smallest fruits are available to drop; larger ones unlock as you merge.
+
+## 🎯 Features
+
+- **Physics-based gameplay** — realistic gravity, collisions, rolling, and stacking via Matter.js
+- **Auto merge & chain reactions** — cascading combos when identical fruits touch
+- **Accounts & guest mode** — sign up / log in for a saved profile, or play instantly as a guest
+- **Online leaderboard** — authenticated users can submit scores and see how they rank
+- **Multi-language UI** — English, Polish, and Russian, via i18next
+- **Email verification** — new accounts are verified by email before full access
+- **Responsive design** — works on desktop and mobile
+- **In-app tech stack page** — visit `/stack` (or the floating button) to see how the app is built
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
+- Node.js (v18 or higher)
+- npm
 
 ### Installation
 
 1. Install dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 2. Start the development server:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm run dev
+   ```
 
 3. Open your browser and navigate to the URL shown in the terminal (usually `http://localhost:5173`)
+
+The frontend talks to a separate backend API (see [Tech Stack](#-tech-stack)) for auth, email verification, and the leaderboard; `VITE_API_BASE_URL` controls which API it points to. Copy `.env.development.example` to `.env.development` (and `.env.production.example` to `.env.production` for prod builds) and set the URL there — both `.env.*` files are gitignored since they're environment-specific, not secrets to commit. On Netlify, set `VITE_API_BASE_URL` in the site's environment variables instead of committing a `.env.production` file.
 
 ### Build for Production
 
@@ -41,99 +58,24 @@ npm run build
 
 The built files will be in the `dist` directory.
 
-## 🎯 Features
-
-- **Physics-Based**: Realistic 2D physics with collision detection, rolling, and stacking using Matter.js
-- **Drop Mechanics**: Click to drop fruits from the top of the container
-- **Auto Merge**: Automatic merging when 2 identical fruits touch
-- **Chain Reactions**: Cascading merges create exciting combos
-- **Score Tracking**: Real-time score display with high score persistence
-- **Game Over Line**: Visible warning line - don't let fruits stack too high!
-- **Responsive Design**: Works on desktop and mobile devices
-- **Beautiful UI**: Modern gradient design with smooth animations
-
-## 🍓 Fruit Progression
-
-The game includes 11 different fruit types in a clear progression sequence:
-
-1. 🍒 Cherry (10 points, radius: 12px) - **Smallest**
-2. 🍓 Strawberry (20 points, radius: 16px)
-3. 🍇 Grape (50 points, radius: 20px)
-4. 🍊 Dekopon (100 points, radius: 26px)
-5. 🍅 Persimmon (200 points, radius: 32px)
-6. 🍎 Apple (500 points, radius: 40px)
-7. 🍐 Pear (1000 points, radius: 48px)
-8. 🍍 Pineapple (2000 points, radius: 58px)
-9. 🍈 Melon (5000 points, radius: 70px)
-10. 🥥 Coconut (10000 points, radius: 84px)
-11. 🍉 Watermelon (20000 points, radius: 100px) - **Largest/Goal!**
-
-**Spawning**: Initially, only the first 3-4 smallest fruits (Cherry, Strawberry, Grape, and sometimes Dekopon) are available to drop randomly.
-
 ## 🧪 Testing
 
 The project includes end-to-end (e2e) tests using Playwright.
 
-### Running Tests
-
-1. **Run all e2e tests:**
-
-   ```bash
-   npm run test:e2e
-   ```
-
-2. **Run tests in UI mode (interactive):**
-
-   ```bash
-   npm run test:e2e:ui
-   ```
-
-3. **Run tests in headed mode (see browser):**
-
-   ```bash
-   npm run test:e2e:headed
-   ```
-
-4. **Run tests in debug mode:**
-   ```bash
-   npm run test:e2e:debug
-   ```
-
-### Test Coverage
-
-The e2e tests cover:
-
-- Game initialization and UI elements
-- Fruit dropping mechanics
-- Fruit merging functionality
-- Score tracking
-- Game over conditions
-- High score persistence
-- UI interactions and responsiveness
-
-### Installing Playwright Browsers
-
-If you're running tests for the first time, you may need to install Playwright browsers:
-
 ```bash
-npx playwright install
+npm run test:e2e          # run all e2e tests
+npm run test:e2e:ui       # interactive UI mode
+npm run test:e2e:headed   # see the browser while tests run
+npm run test:e2e:debug    # debug mode
 ```
 
-## 🛠️ Technologies Used
+Test coverage includes game initialization, fruit dropping/merging, scoring, game-over conditions, and high-score persistence. If running for the first time, install browsers with `npx playwright install`.
 
-- React 18
-- Matter.js (2D physics engine)
-- Vite (build tool)
-- Playwright (e2e testing)
-- CSS3 (styling)
-- localStorage (high score persistence)
+## 🛠️ Tech Stack
 
-## 🎯 Game Mechanics
+Frontend: React 18, TypeScript, Vite, Redux Toolkit, React Router, Matter.js (physics), i18next (i18n), Playwright (e2e). Backend: Spring Boot (Java), PostgreSQL, JWT auth. Deployed on Netlify (frontend) and Render + Neon (backend/DB).
 
-- **Physics**: Fruits have realistic physics with gravity, collision detection, and rolling
-- **Merging**: Two identical fruits merge when they touch, creating the next fruit in the sequence
-- **Game Over**: If any fruit crosses the Game Over line and stays there for 2 seconds, the game ends
-- **High Score**: Your best score is saved in localStorage and displayed
+For the full architecture, request flows, API endpoints, and directory map, see [docs/STACK.md](docs/STACK.md) — the same content is also rendered live in the app at `/stack`.
 
 ## 📝 License
 
