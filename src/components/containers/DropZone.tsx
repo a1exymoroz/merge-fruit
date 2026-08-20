@@ -57,7 +57,10 @@ function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
     setIsDragging(true);
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    // Prevent the browser from also firing synthetic mouse events
+    // (mousedown/mouseup) after this touch, which would double-trigger onDrop.
+    e.preventDefault();
     if (isDragging) {
       onDrop(dropPosition);
       setIsDragging(false);
