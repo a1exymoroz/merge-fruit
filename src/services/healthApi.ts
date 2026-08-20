@@ -1,8 +1,10 @@
 import { HEALTH_URL } from '../config/api';
 
 const WARM_UP_TIMEOUT_MS = 50_000;
+export const COLD_START_THRESHOLD_MS = 10_000;
 
 let warmUpPromise: Promise<boolean> | null = null;
+let warmUpStartedAt: number | null = null;
 
 async function pingHealth(): Promise<boolean> {
   const controller = new AbortController();
@@ -29,8 +31,13 @@ async function warmUpWithRetry(): Promise<boolean> {
 
 export function warmUpBackend(): Promise<boolean> {
   if (!warmUpPromise) {
+    warmUpStartedAt = Date.now();
     warmUpPromise = warmUpWithRetry();
   }
 
   return warmUpPromise;
+}
+
+export function getWarmUpStartedAt(): number | null {
+  return warmUpStartedAt;
 }

@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useColdStart } from '../../hooks';
 import './ColdStartNotice.css';
 
 interface ColdStartNoticeProps {
@@ -8,6 +9,11 @@ interface ColdStartNoticeProps {
 
 function ColdStartNotice({ waiting = false, className = '' }: ColdStartNoticeProps) {
   const { t } = useTranslation();
+  const isColdStart = useColdStart();
+
+  if (!isColdStart) {
+    return null;
+  }
 
   return (
     <p
