@@ -36,7 +36,7 @@ const BACKEND_STACK: StackRow[] = [
   { layer: 'Security', tech: 'Spring Security 6, BCrypt, JWT (JJWT 0.12.6 / HS256)' },
   { layer: 'Data', tech: 'PostgreSQL, Spring Data JPA, Hibernate, HikariCP, Flyway' },
   { layer: 'Email', tech: 'Brevo REST API via RestClient' },
-  { layer: 'Ops', tech: 'Spring Actuator, Docker (local), Render + Neon (prod)' },
+  { layer: 'Ops', tech: 'Spring Actuator, Docker (jlink custom JRE on Alpine), Render or Oracle Cloud + Neon (prod)' },
 ];
 
 function RepoLink({ href, name }: { href: string; name: string }) {
@@ -134,7 +134,7 @@ function TechStackPage() {
           </div>
         </div>
         <p className="tech-stack-hosting">
-          {t('stack.hosting')}: Netlify (frontend) · Render + Neon (backend)
+          {t('stack.hosting')}: Netlify (frontend) · Render or Oracle Cloud + Neon (backend)
         </p>
       </section>
 
