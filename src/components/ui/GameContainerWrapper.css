@@ -1,15 +1,11 @@
 .game-container-wrapper {
   position: relative;
   margin: 0 auto 20px;
+  padding: 0;
+  max-width: 100%;
   border: 4px solid #333;
   border-radius: 10px;
   background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 100%);
   overflow: hidden;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 600px) {
-  .game-container-wrapper {
-    max-width: 100%;
-  }
 }

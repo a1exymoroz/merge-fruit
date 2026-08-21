@@ -21,8 +21,8 @@ export const FRUIT_TYPES: FruitType[] = [
   { id: 11, name: 'Watermelon', points: 20000, radius: 100 }, // Largest
 ];
 
-export const CONTAINER_WIDTH = 400;
-export const CONTAINER_HEIGHT = 600;
+export const CONTAINER_WIDTH = 300;
+export const CONTAINER_HEIGHT = 500;
 export const GAME_OVER_LINE_Y = 100;
 export const DROP_X = CONTAINER_WIDTH / 2;
 export const DROP_Y = 50;
