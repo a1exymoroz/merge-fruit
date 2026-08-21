@@ -53,7 +53,17 @@ function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
     }
   };
 
-  const handleTouchStart = () => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!dropZoneRef.current) return;
+
+    const touch = e.touches[0];
+    const rect = dropZoneRef.current.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const clampedX = Math.max(
+      nextFruit?.radius || 0,
+      Math.min(CONTAINER_WIDTH - (nextFruit?.radius || 0), x),
+    );
+    setDropPosition(clampedX);
     setIsDragging(true);
   };
 
