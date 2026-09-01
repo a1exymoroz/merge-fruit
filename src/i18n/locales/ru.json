@@ -52,6 +52,7 @@
   },
   "game": {
     "score": "Счёт: {{score}}",
+    "scoreShort": "Счёт",
     "highScore": "Рекорд: {{score}}",
     "nextFruit": "Следующий фрукт:",
     "resetGame": "Сбросить игру",
@@ -68,6 +69,19 @@
     "ranked": "🏆 Вы заняли {{rank}}-е место!",
     "scoreSaved": "Счёт сохранён!",
     "playAgain": "Играть снова"
+  },
+  "theme": {
+    "label": "Тема",
+    "classic": "Классика",
+    "winter": "Зима"
+  },
+  "booster": {
+    "bomb": "Бомба",
+    "upgrade": "Апгрейд",
+    "swap": "Замена",
+    "hold": "Карман",
+    "hintBomb": "Нажмите на фрукт, чтобы убрать его",
+    "hintUpgrade": "Нажмите на фрукт, чтобы поднять уровень"
   },
   "instructions": {
     "title": "Как играть:",

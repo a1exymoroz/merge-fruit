@@ -4,6 +4,20 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* HUD surface tokens — overridden per game skin (see [data-theme]). */
+  --hud-card-bg: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+  --hud-card-border: #e0e7ff;
+  --hud-text: #3b3f5c;
+  --hud-label: rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme='winter'] {
+  --hud-card-bg: linear-gradient(135deg, #eaf6fd 0%, #d3ebfb 100%);
+  --hud-card-border: #b3d9f2;
+  --hud-text: #123f5f;
+}
+
 body {
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
@@ -17,6 +31,10 @@ body {
   align-items: center;
 }
 
+:root[data-theme='winter'] body {
+  background: linear-gradient(135deg, #7fb4e0 0%, #dceffa 100%);
+}
+
 #root {
   width: 100%;
   min-height: 100vh;
@@ -24,6 +42,19 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 @media (max-width: 600px) {

@@ -5,18 +5,17 @@ import './NextFruitDisplay.css';
 
 interface NextFruitDisplayProps {
   nextFruit: FruitType | null;
+  wearHat?: boolean;
 }
 
-function NextFruitDisplay({ nextFruit }: NextFruitDisplayProps) {
+function NextFruitDisplay({ nextFruit, wearHat }: NextFruitDisplayProps) {
   const { t } = useTranslation();
-
-  if (!nextFruit) return null;
 
   return (
     <div className="next-fruit-container">
       <p>{t('game.nextFruit')}</p>
       <div className="next-fruit">
-        <Fruit fruit={nextFruit} size={60} />
+        {nextFruit && <Fruit fruit={nextFruit} size={44} wearHat={wearHat} />}
       </div>
     </div>
   );

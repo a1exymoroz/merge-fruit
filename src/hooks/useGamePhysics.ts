@@ -53,6 +53,13 @@ export interface UseGamePhysicsParams {
   runnerRef: MutableRefObject<Matter.Runner | null>;
 }
 
+export interface GamePhysicsHandle {
+  /** Bomb booster: remove the fruit under the given container point. Returns true on a hit. */
+  removeFruitAt: (x: number, y: number) => boolean;
+  /** Upgrade booster: replace the fruit under the point with the next tier. Returns true on a hit. */
+  upgradeFruitAt: (x: number, y: number) => boolean;
+}
+
 export function useGamePhysics({
   fruitsRef,
   setFruits,
@@ -65,7 +72,7 @@ export function useGamePhysics({
   createFruit,
   engineRef,
   runnerRef,
-}: UseGamePhysicsParams): void {
+}: UseGamePhysicsParams): GamePhysicsHandle {
   // Use refs to track current values inside the interval callback (avoid stale closures)
   const gameOverRef = useRef(gameOver);
   const gameOverTimerRef = useRef(gameOverTimer);
@@ -264,4 +271,52 @@ export function useGamePhysics({
       if (engineRef.current) Matter.Engine.clear(engineRef.current);
     };
   }, []);
+
+  // --- booster helpers -------------------------------------------------
+  // Operate directly on the live body map / engine world (both refs, always
+  // current), matching PhysicsEngine.removeFruitAt / upgradeFruitAt in the
+  // Android port.
+
+  const findFruitAt = (x: number, y: number): { body: Matter.Body; data: FruitData } | null => {
+    const map = fruitsRef.current;
+    if (!map) return null;
+    type Candidate = { body: Matter.Body; data: FruitData; dist: number };
+    let best: Candidate | null = null;
+    map.forEach((data, body) => {
+      const dist = Math.hypot(body.position.x - x, body.position.y - y);
+      if (dist <= data.fruitType.radius && (best === null || dist < best.dist)) {
+        best = { body, data, dist };
+      }
+    });
+    const hit = best as Candidate | null;
+    return hit ? { body: hit.body, data: hit.data } : null;
+  };
+
+  const removeFruitAt = (x: number, y: number): boolean => {
+    const engine = engineRef.current;
+    const map = fruitsRef.current;
+    if (!engine || !map || gameOverRef.current) return false;
+    const hit = findFruitAt(x, y);
+    if (!hit) return false;
+    Matter.World.remove(engine.world, hit.body);
+    map.delete(hit.body);
+    return true;
+  };
+
+  const upgradeFruitAt = (x: number, y: number): boolean => {
+    const engine = engineRef.current;
+    const map = fruitsRef.current;
+    if (!engine || !map || gameOverRef.current) return false;
+    const hit = findFruitAt(x, y);
+    if (!hit) return false;
+    const nextFruitType = FRUIT_TYPES.find((f) => f.id === hit.data.fruitType.id + 1);
+    if (!nextFruitType) return false;
+    const { x: px, y: py } = hit.body.position;
+    Matter.World.remove(engine.world, hit.body);
+    map.delete(hit.body);
+    createFruit(nextFruitType, px, py);
+    return true;
+  };
+
+  return { removeFruitAt, upgradeFruitAt };
 }

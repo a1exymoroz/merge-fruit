@@ -52,6 +52,7 @@
   },
   "game": {
     "score": "Score: {{score}}",
+    "scoreShort": "Score",
     "highScore": "High Score: {{score}}",
     "nextFruit": "Next Fruit:",
     "resetGame": "Reset Game",
@@ -68,6 +69,19 @@
     "ranked": "🏆 You ranked #{{rank}}!",
     "scoreSaved": "Score saved!",
     "playAgain": "Play Again"
+  },
+  "theme": {
+    "label": "Theme",
+    "classic": "Classic",
+    "winter": "Winter"
+  },
+  "booster": {
+    "bomb": "Bomb",
+    "upgrade": "Upgrade",
+    "swap": "Swap",
+    "hold": "Hold",
+    "hintBomb": "Tap a fruit to remove it",
+    "hintUpgrade": "Tap a fruit to level it up"
   },
   "instructions": {
     "title": "How to Play:",

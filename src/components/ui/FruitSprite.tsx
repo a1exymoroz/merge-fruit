@@ -1,13 +1,17 @@
-import { memo } from 'react';
+import { memo, useId } from 'react';
 import { type FruitType } from '../../constants/gameConstants';
 import { renderFruitArt } from '../../constants/fruitArt';
 
 interface FruitSpriteProps {
   fruit: FruitType;
   size: number;
+  /** Winter skin — the fruit wears a Santa hat. */
+  wearHat?: boolean;
 }
 
-function FruitSprite({ fruit, size }: FruitSpriteProps) {
+function FruitSprite({ fruit, size, wearHat = false }: FruitSpriteProps) {
+  const uid = useId();
+
   if (fruit.image) {
     return (
       <img
@@ -30,7 +34,7 @@ function FruitSprite({ fruit, size }: FruitSpriteProps) {
       aria-label={fruit.name}
       role="img"
     >
-      {renderFruitArt(fruit.id)}
+      {renderFruitArt(fruit.id, uid, wearHat)}
     </svg>
   );
 }

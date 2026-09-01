@@ -2,15 +2,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeSwitcher from './ThemeSwitcher';
+import NextFruitDisplay from './NextFruitDisplay';
+import { type FruitType } from '../../constants/gameConstants';
 import './GameHeader.css';
 import '../containers/VerifyEmailPage.css';
 
 interface GameHeaderProps {
   score: number;
   highScore: number;
+  nextFruit: FruitType | null;
+  wearHats: boolean;
 }
 
-function GameHeader({ score, highScore }: GameHeaderProps) {
+function GameHeader({ score, highScore, nextFruit, wearHats }: GameHeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, isGuest, logout } = useAuth();
@@ -35,6 +40,7 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
         </div>
         <div className="game-header-actions">
           <LanguageSwitcher />
+          <ThemeSwitcher />
           {isGuest ? (
             <button type="button" className="logout-btn" onClick={() => navigate('/login')}>
               {t('auth.logIn')}
@@ -55,9 +61,26 @@ function GameHeader({ score, highScore }: GameHeaderProps) {
       )}
 
       <h1>{t('common.appTitleGame')}</h1>
+
       <div className="scores">
-        <div className="score">{t('game.score', { score })}</div>
-        <div className="high-score">{t('game.highScore', { score: highScore })}</div>
+        <div className="stat-card stat-card--score">
+          <span className="stat-card-label">{t('game.scoreShort')}</span>
+          <span className="stat-card-value">{score.toLocaleString()}</span>
+          {/* Full phrase kept for a11y / tests. */}
+          <span className="visually-hidden score">{t('game.score', { score })}</span>
+        </div>
+        <div className="stat-card stat-card--high">
+          <span className="stat-card-label" aria-hidden="true">
+            🏆
+          </span>
+          <span className="stat-card-value">{highScore.toLocaleString()}</span>
+          <span className="visually-hidden high-score">
+            {t('game.highScore', { score: highScore })}
+          </span>
+        </div>
+        <div className="stat-card stat-card--next">
+          <NextFruitDisplay nextFruit={nextFruit} wearHat={wearHats} />
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,38 @@
+.fruit-progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 2px;
+  margin: 0 24px 18px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--hud-card-bg, linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%));
+  border: 1px solid var(--hud-card-border, #e0e7ff);
+  overflow-x: auto;
+}
+
+.fruit-progress-item {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  opacity: 0.28;
+  filter: grayscale(0.55);
+  transition:
+    opacity 0.25s ease,
+    filter 0.25s ease,
+    transform 0.25s ease;
+}
+
+.fruit-progress-item--reached {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.06);
+}
+
+@media (max-width: 600px) {
+  .fruit-progress-bar {
+    margin: 0 12px 16px;
+    justify-content: flex-start;
+  }
+}
