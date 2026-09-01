@@ -1,0 +1,43 @@
+.snow-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.snowflake {
+  position: absolute;
+  top: -12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+  animation-name: snow-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes snow-fall {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(var(--drift, 0), 105vh);
+  }
+}
+
+.candy-cane {
+  display: block;
+  width: 150px;
+  height: 90px;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.2));
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snowflake {
+    animation: none;
+    display: none;
+  }
+}

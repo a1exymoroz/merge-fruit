@@ -52,6 +52,7 @@
   },
   "game": {
     "score": "Wynik: {{score}}",
+    "scoreShort": "Wynik",
     "highScore": "Rekord: {{score}}",
     "nextFruit": "Następny owoc:",
     "resetGame": "Resetuj grę",
@@ -68,6 +69,19 @@
     "ranked": "🏆 Zająłeś/aś {{rank}}. miejsce!",
     "scoreSaved": "Wynik zapisany!",
     "playAgain": "Zagraj ponownie"
+  },
+  "theme": {
+    "label": "Motyw",
+    "classic": "Klasyczny",
+    "winter": "Zima"
+  },
+  "booster": {
+    "bomb": "Bomba",
+    "upgrade": "Ulepszenie",
+    "swap": "Zamiana",
+    "hold": "Schowek",
+    "hintBomb": "Dotknij owoc, aby go usunąć",
+    "hintUpgrade": "Dotknij owoc, aby podnieść poziom"
   },
   "instructions": {
     "title": "Jak grać:",

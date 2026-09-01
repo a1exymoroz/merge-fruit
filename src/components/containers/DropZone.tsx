@@ -9,9 +9,11 @@ interface DropZoneProps {
   onDrop: (x: number) => void;
   nextFruit: FruitType | null;
   height: number;
+  /** Winter skin — the preview fruit wears a Santa hat. */
+  wearHat?: boolean;
 }
 
-function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
+function DropZone({ onDrop, nextFruit, height, wearHat }: DropZoneProps) {
   const { t } = useTranslation();
   const [dropPosition, setDropPosition] = useState(CONTAINER_WIDTH / 2);
   const [isDragging, setIsDragging] = useState(false);
@@ -115,7 +117,7 @@ function DropZone({ onDrop, nextFruit, height }: DropZoneProps) {
         {nextFruit && (
           <div className="drop-preview" style={{ left: `${dropPosition - nextFruit.radius}px` }}>
             <div className="drop-shadow">
-              <Fruit fruit={nextFruit} size={nextFruit.radius * 2} />
+              <Fruit fruit={nextFruit} size={nextFruit.radius * 2} wearHat={wearHat} />
             </div>
           </div>
         )}

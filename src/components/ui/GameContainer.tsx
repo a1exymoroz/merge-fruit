@@ -1,4 +1,3 @@
-import React from 'react';
 import Fruit from './Fruit';
 import { type FruitRenderData } from '../../hooks/useGamePhysics';
 import './GameContainer.css';
@@ -6,9 +5,10 @@ import { CONTAINER_WIDTH, CONTAINER_HEIGHT } from '../../constants/gameConstants
 
 interface GameContainerProps {
   fruits: FruitRenderData[];
+  wearHats?: boolean;
 }
 
-function GameContainer({ fruits }: GameContainerProps) {
+function GameContainer({ fruits, wearHats }: GameContainerProps) {
   return (
     <div
       className="game-container"
@@ -21,6 +21,7 @@ function GameContainer({ fruits }: GameContainerProps) {
           x={fruitData.x}
           y={fruitData.y}
           angle={fruitData.angle}
+          wearHat={wearHats}
         />
       ))}
     </div>

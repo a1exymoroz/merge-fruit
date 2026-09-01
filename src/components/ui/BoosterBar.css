@@ -1,0 +1,73 @@
+.booster-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 0 24px 14px;
+  padding: 8px;
+  border-radius: 16px;
+  background: var(--hud-card-bg, linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%));
+  border: 1px solid var(--hud-card-border, #e0e7ff);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+}
+
+.booster-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  flex: 1;
+  padding: 6px 4px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--hud-text, #3b3f5c);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.booster-button:hover:not(:disabled) {
+  background: rgba(102, 126, 234, 0.12);
+}
+
+.booster-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.booster-button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.booster-button--armed {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.45);
+}
+
+.booster-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.booster-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+.booster-count {
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+@media (max-width: 600px) {
+  .booster-bar {
+    margin: 0 16px 12px;
+  }
+}

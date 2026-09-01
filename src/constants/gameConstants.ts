@@ -29,3 +29,12 @@ export const DROP_Y = 50;
 export const CONTAINER_THICKNESS = 20;
 export const GAME_OVER_DELAY = 2000; // 2 seconds
 export const UPDATE_INTERVAL = 16; // ~60fps
+
+// Decorative 3D depth for the open glass box (see GlassBox / GameContainerWrapper).
+// The play field stays a plain CONTAINER_WIDTH x CONTAINER_HEIGHT rectangle — the
+// physics never sees these; they only extend the box's drawn top/right faces.
+export const CONTAINER_DEPTH_X = Math.round(CONTAINER_WIDTH * 0.16); // 48
+export const CONTAINER_DEPTH_Y = Math.round(CONTAINER_WIDTH * 0.08); // 24
+
+// Boosters — charges granted per game (mirrors Android BOOSTER_START_COUNT).
+export const BOOSTER_START_COUNT = 3;

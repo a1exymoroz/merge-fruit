@@ -9,9 +9,11 @@ interface FruitProps {
   y?: number;
   angle?: number;
   size?: number;
+  /** Winter skin — the fruit wears a Santa hat. */
+  wearHat?: boolean;
 }
 
-function Fruit({ fruit, x, y, angle, size }: FruitProps) {
+function Fruit({ fruit, x, y, angle, size, wearHat }: FruitProps) {
   if (!fruit) return null;
 
   const displaySize = size || fruit.radius * 2;
@@ -32,7 +34,7 @@ function Fruit({ fruit, x, y, angle, size }: FruitProps) {
       data-fruit-id={fruit.id}
       data-fruit-name={fruit.name}
     >
-      <FruitSprite fruit={fruit} size={displaySize} />
+      <FruitSprite fruit={fruit} size={displaySize} wearHat={wearHat} />
     </div>
   );
 }

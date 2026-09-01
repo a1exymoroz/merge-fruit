@@ -9,3 +9,6 @@ export { default as GameInfo } from './GameInfo';
 export { default as GameOverOverlay } from './GameOverOverlay';
 export { default as GameOverLine } from './GameOverLine';
 export { default as Leaderboard } from './Leaderboard';
+export { default as BoosterBar } from './BoosterBar';
+export { default as FruitProgressBar } from './FruitProgressBar';
+export { default as ThemeSwitcher } from './ThemeSwitcher';

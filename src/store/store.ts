@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import scoresReducer from './scoresSlice';
-// import gameReducer from './gameSlice' // TODO (learning): uncomment after implementing gameSlice
+import gameReducer from './gameSlice';
+import themeReducer from './themeSlice';
 
 export const store = configureStore({
   reducer: {
     scores: scoresReducer,
-    // game: gameReducer, // TODO (learning): uncomment after implementing gameSlice
+    game: gameReducer,
+    theme: themeReducer,
   },
 });
 
