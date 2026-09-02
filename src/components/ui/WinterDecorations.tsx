@@ -50,34 +50,14 @@ export function SnowLayer() {
   );
 }
 
-/** A striped candy cane, drawn above the jar for the winter skin. */
+/** A candy cane image, drawn leaning above the jar for the winter skin. */
 export function CandyCane({ className }: { className?: string }) {
-  const w = 100;
-  const h = 60;
-  const thickness = h * 0.26;
-  const d = [
-    `M ${w * 0.14} ${h * 0.62}`,
-    `Q ${w * 0.1} ${h * 0.16} ${w * 0.3} ${h * 0.16}`,
-    `Q ${w * 0.44} ${h * 0.16} ${w * 0.46} ${h * 0.46}`,
-    `M ${w * 0.3} ${h * 0.16}`,
-    `Q ${w * 0.62} ${h * 0.2} ${w * 0.9} ${h * 0.78}`,
-  ].join(' ');
-
   return (
-    <svg
-      className={['candy-cane', className].filter(Boolean).join(' ')}
-      viewBox={`0 0 ${w} ${h}`}
+    <img
+      src="/candy_cane.png"
+      alt=""
       aria-hidden="true"
-    >
-      <path d={d} fill="none" stroke="#E23B3B" strokeWidth={thickness} strokeLinecap="round" />
-      <path
-        d={d}
-        fill="none"
-        stroke="#FFFFFF"
-        strokeWidth={thickness}
-        strokeLinecap="butt"
-        strokeDasharray={`${thickness * 0.5} ${thickness * 0.8}`}
-      />
-    </svg>
+      className={['candy-cane', className].filter(Boolean).join(' ')}
+    />
   );
 }

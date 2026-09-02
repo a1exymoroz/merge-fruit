@@ -61,7 +61,7 @@ const R = 44;
 
 // --- accent per fruit -----------------------------------------------
 
-function renderAccent(id: number, palette: FruitPalette) {
+function renderAccent(id: number, palette: FruitPalette, uid: string) {
   const { body, accent } = palette;
   switch (id) {
     case 1: // blueberry crown
@@ -177,28 +177,67 @@ function renderAccent(id: number, palette: FruitPalette) {
       );
     case 9: // coconut pale patch
       return <circle cx={CX + R * 0.15} cy={CY + R * 0.1} r={R * 0.5} fill={accent} />;
-    case 10: // melon net
+    case 10: {
+      // melon net — a real crosshatch, clipped to the body so it can't spike past the edge
+      const clipId = `melon-clip-${uid}`;
       return (
-        <g stroke={accent} strokeOpacity={0.5} strokeWidth={R * 0.05}>
-          {[-2, -1, 0, 1, 2].map((k) => (
-            <line key={k} x1={CX + k * R * 0.32} y1={CY - R} x2={CX + k * R * 0.32} y2={CY + R} />
-          ))}
-        </g>
+        <>
+          <defs>
+            <clipPath id={clipId}>
+              <circle cx={CX} cy={CY} r={R} />
+            </clipPath>
+          </defs>
+          <g clipPath={`url(#${clipId})`}>
+            <g stroke={accent} strokeOpacity={0.65} strokeWidth={R * 0.06}>
+              {[-2, -1, 0, 1, 2].map((k) => (
+                <line
+                  key={`v${k}`}
+                  x1={CX + k * R * 0.32}
+                  y1={CY - R}
+                  x2={CX + k * R * 0.32}
+                  y2={CY + R}
+                />
+              ))}
+            </g>
+            <g stroke={accent} strokeOpacity={0.5} strokeWidth={R * 0.05}>
+              {[-2, -1, 0, 1, 2].map((k) => (
+                <line
+                  key={`h${k}`}
+                  x1={CX - R}
+                  y1={CY + k * R * 0.32}
+                  x2={CX + R}
+                  y2={CY + k * R * 0.32}
+                />
+              ))}
+            </g>
+          </g>
+        </>
       );
-    case 11: // watermelon stripes
+    }
+    case 11: {
+      // watermelon stripes, clipped to the body so the outer stripes can't spike past the edge
+      const clipId = `watermelon-clip-${uid}`;
       return (
-        <g stroke={accent} strokeWidth={R * 0.14}>
-          {[-2, -1, 0, 1, 2].map((k) => (
-            <line
-              key={k}
-              x1={CX + k * R * 0.42}
-              y1={CY - R * 0.95}
-              x2={CX + k * R * 0.42}
-              y2={CY + R * 0.95}
-            />
-          ))}
-        </g>
+        <>
+          <defs>
+            <clipPath id={clipId}>
+              <circle cx={CX} cy={CY} r={R} />
+            </clipPath>
+          </defs>
+          <g stroke={accent} strokeWidth={R * 0.16} clipPath={`url(#${clipId})`}>
+            {[-2, -1, 0, 1, 2].map((k) => (
+              <line
+                key={k}
+                x1={CX + k * R * 0.42}
+                y1={CY - R}
+                x2={CX + k * R * 0.42}
+                y2={CY + R}
+              />
+            ))}
+          </g>
+        </>
       );
+    }
     default:
       return null;
   }
@@ -292,7 +331,7 @@ export function renderFruitArt(id: number, uid: string, wearHat = false) {
         </radialGradient>
       </defs>
       <circle cx={CX} cy={CY} r={R} fill={`url(#${gradId})`} />
-      {renderAccent(id, palette)}
+      {renderAccent(id, palette, uid)}
       <ellipse
         cx={CX - R * 0.55 + R * 0.35}
         cy={CY - R * 0.8 + R * 0.25}

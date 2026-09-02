@@ -10,7 +10,7 @@
 
 /* Room above the jar for the candy cane in the winter skin. */
 .merge-fruit-game--winter .game-container-wrapper {
-  margin-top: 40px;
+  margin-top: 78px;
 }
 
 .game-field {
@@ -22,11 +22,11 @@
 
 .jar-candy-cane {
   position: absolute;
-  left: 30%;
+  left: 50%;
   bottom: 100%;
-  transform: translate(-50%, 58%) rotate(-5deg);
-  width: 104px;
-  height: 64px;
+  transform: translate(-50%, 30%) rotate(-60deg);
+  width: auto;
+  height: 104px;
   z-index: 3;
 }
 
