@@ -53,7 +53,8 @@ export async function signUp(
 ): Promise<AuthResponse> {
   const response = await fetch(`${AUTH_API_URL}/signup`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    // X-Client-Platform tells the API which verify-email link to send (web URL vs. app deep link).
+    headers: { 'Content-Type': 'application/json', 'X-Client-Platform': 'web' },
     body: JSON.stringify({ email, password, displayName }),
   });
 
