@@ -56,7 +56,6 @@
     "highScore": "Рекорд: {{score}}",
     "nextFruit": "Следующий фрукт:",
     "resetGame": "Сбросить игру",
-    "gameOverLine": "Линия проигрыша",
     "releaseToDrop": "Отпустите, чтобы бросить",
     "moveToPosition": "Переместите • Клик/Пробел, чтобы бросить",
     "gameOver": "Игра окончена!",
